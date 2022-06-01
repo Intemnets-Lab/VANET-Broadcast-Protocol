@@ -182,7 +182,6 @@ namespace ns3
       } 
       else
       {
-        std::cout << "Valid Route Not Found" << std::endl;
         // Valid route not found, return loopback
         uint32_t iif = (oif ? m_ipv4->GetInterfaceForDevice (oif) : -1);
         DeferredRouteOutputTag tag (iif);
