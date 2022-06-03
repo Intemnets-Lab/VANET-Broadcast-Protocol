@@ -49,7 +49,7 @@ namespace ns3
                       LocalDeliverCallback lcb,
                       ErrorCallback ecb);
       virtual void SetIpv4(Ptr<Ipv4> ipv4);
-      bool RoutePacket(Ptr<const Packet> p, Ipv4Address dst, Ipv4Address src, bool *packetSentIndicator);
+      bool RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bool *packetSentIndicator);
       void SetBroadcastArea(std::vector<float> broadcastArea);
       std::vector<float> GetBroadcastArea();
       virtual void PrintRoutingTable(Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S) const;
