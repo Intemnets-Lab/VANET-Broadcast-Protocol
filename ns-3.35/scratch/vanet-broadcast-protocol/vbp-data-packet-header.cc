@@ -30,9 +30,9 @@ namespace ns3
    // routines to print the content of my header.
    // os << "Packet type: " << GetPacketType() << std::endl;
     os << "Previous Hop: " << GetPrevHopIP() << std::endl;
-    //os << "point 1: " << GetPosition1X() << ", " << GetPosition1Y() << std::endl;
-    //os << "point 2: " << GetPosition2X() << ", " << GetPosition2Y() << std::endl;
-    //os << "BATime is: " << GetBroadcastingTime() << " seconds" << std::endl;
+    os << "point 1: " << GetPosition1X() << ", " << GetPosition1Y() << std::endl;
+    os << "point 2: " << GetPosition2X() << ", " << GetPosition2Y() << std::endl;
+    os << "BATime is: " << GetBroadcastingTime() << " seconds" << std::endl;
  }
 
  uint32_t VbpRoutingHeader::GetSerializedSize (void) const {

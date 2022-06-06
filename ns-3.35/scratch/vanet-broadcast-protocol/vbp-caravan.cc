@@ -124,7 +124,7 @@
 //     // vbp
 //     InternetStackHelper stack;
 //     VanetBroadcastHelper vbp; //VanetBroadcastHelper
-//     vbp.SetBroadcastArea({10000,10,15000,10});
+//     vbp.SetBroadcastArea({10000,-10,15000,10});
 //     stack.SetRoutingHelper(vbp);
 //     stack.Install(nodes);
 

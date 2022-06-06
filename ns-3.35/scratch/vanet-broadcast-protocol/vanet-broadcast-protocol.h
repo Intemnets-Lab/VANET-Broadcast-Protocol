@@ -107,6 +107,7 @@ namespace ns3
       int FindNextHopLowTrafficUpstreamAwayBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
       void EmptyQueue();
       void ScheduleEmptyQueue();
+      void SetSendFirstHop(Ipv4Address* nextHopAheadPtr,Ipv4Address* nextHopBehindPtr,Ptr<Packet> p,Ptr<NetDevice> dev ,Ipv4InterfaceAddress iface,Ipv4Address src,Ipv4Address dst);
 
       Ptr<Socket> FindSocketWithInterfaceAddress(Ipv4InterfaceAddress iface) const;
       /**
