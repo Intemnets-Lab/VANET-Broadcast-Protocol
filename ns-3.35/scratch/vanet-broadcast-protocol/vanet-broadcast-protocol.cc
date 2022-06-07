@@ -92,7 +92,7 @@ namespace ns3
           m_vcHighTraffic(0.8),
           m_vcLowTraffic(0.4),
           m_emptyQueuePeriod(0.5),
-          m_BroadcastTime(1000000),
+          m_BroadcastTime(1e9),
           m_routingTable(Time(5)),
           m_helloPacketType('h'),
           m_dataPacketType('d')
@@ -143,6 +143,7 @@ namespace ns3
       std::cout << "Route Output Packet Type: " << routingHeader.GetPacketType() << std::endl;
       if (FindFirstHop(&nextHopAhead, &nextHopBehind)) //find next hop
       {
+        std::cout << "Send First Hop - Ahead " << nextHopAhead << " Behind " << nextHopBehind << std::endl; 
         SetSendFirstHop(&nextHopAhead,&nextHopBehind,p,dev,iface,src,dst);
       } 
       else
@@ -290,12 +291,13 @@ namespace ns3
           uint8_t protocol_numb = header.GetProtocol();
           if (protocol_numb == PROT_NUMBER)
           {
-            std::cout << "Protocol Number = 253, VBP Data Packet" << std::endl;
+            std::cout << "Protocol Number = 253, VBP Data Packet at " << iface.GetLocal() << std::endl;
             bool packetSentIndicator = false;
             Ptr<Packet> q = p->Copy();
             bool lcbIndicator = RoutePacket(q, dst, src, &packetSentIndicator); //true lcb. false no lcb
             if (lcbIndicator)
             {
+              std::cout << "local delivery at " << iface.GetLocal() << std::endl;
               lcb(q,header,iif);
             }
             return true;
@@ -612,6 +614,9 @@ namespace ns3
  void
    RoutingProtocol::EmptyQueue()
    {
+    Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+    Ipv4Address thisVehicleIP = iface.GetAddress(); 
+    std::cout << "Queue Size at: " << thisVehicleIP << " is " << m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() << std::endl;
      Ipv4Address nextHopAhead; 
      Ipv4Address nextHopBehind;
      if (m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() == 0)
@@ -622,7 +627,7 @@ namespace ns3
      {
        return;
      }
-     Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+     //Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
      Ptr<NetDevice> dev = m_ipv4->GetNetDevice (m_ipv4->GetInterfaceForAddress (iface.GetLocal ()));
      while(m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() > 0)
      {
@@ -811,9 +816,15 @@ namespace ns3
       bool movingToBA = (vehicleVel.x*vehicleToBA.x + vehicleVel.y*vehicleToBA.y) > 0; // true if moving towards BA
       if (movingToBA) 
       {
-        nextHopAheadPtr->Set(FindNextHopDownstream(centerBA, movingToBA).Get());
+        Ipv4Address dummyNextHopAhead = FindNextHopDownstream(centerBA, movingToBA);
+        nextHopAheadPtr->Set(dummyNextHopAhead.Get());
+        std::cout << "Dummy Next Hop Ahead " << dummyNextHopAhead << std::endl;
+        //nextHopAheadPtr->Set(FindNextHopDownstream(centerBA, movingToBA).Get());
       }
-      nextHopBehindPtr->Set(FindNextHopUpstream(centerBA, movingToBA).Get());
+      Ipv4Address dummyNextHopBehind = FindNextHopUpstream(centerBA, movingToBA);
+      nextHopBehindPtr->Set(dummyNextHopBehind.Get());
+      std::cout << "Dummy Next Hop Behind " << dummyNextHopBehind << std::endl;
+      //nextHopBehindPtr->Set(FindNextHopUpstream(centerBA, movingToBA).Get());
       if (*nextHopAheadPtr == Ipv4Address("102.102.102.102") && *nextHopBehindPtr == Ipv4Address("102.102.102.102"))
       {
         std::cout << "Find First Hop Returns False" << std::endl;
@@ -843,12 +854,14 @@ namespace ns3
       std::cout << "Find Next Hop Downstream " << std::endl;
       if (!movingToBA)
       {
+        std::cout << "Return Case 1 " << std::endl;
         return Ipv4Address("102.102.102.102"); // BA in upstream, not downstream
       }
       Ptr<VbpNeighbors> neighborInfo = m_neighborsListPointer->GetObject<VbpNeighbors>();
       uint16_t numNeighbors = neighborInfo->Get1HopNumNeighborsAhead();
       if (numNeighbors == 0) 
       {
+        std::cout << "Return Case 2 " << std::endl;
         return Ipv4Address("102.102.102.102"); // same as receiving node since no neighbors
       }
       Vector vehiclePos = m_thisNode->GetObject<MobilityModel>()->GetPosition();
@@ -856,7 +869,7 @@ namespace ns3
       float LOS = neighborInfo->GetLosCalculation(vehiclePos, vehicleVel); // need to check if neighbor is moving toward broadcast area, if not moving towards bA then ignore
       float stopDist = vehicleVel.GetLength()*3; // stopping distance according to DMV= speed*3 seconds. Distance needed to stop   
           // include paramter to determine if msg moves ahead or backwards
-      int nextHopIdx;
+      int nextHopIdx = -1;
       float neighborhoodSpeed = Vector3D(neighborInfo->GetNeighborHoodSpeedMeanX(), neighborInfo->GetNeighborHoodSpeedMeanY(),0).GetLength();
       if (LOS>m_vcHighTraffic) //high traffic
       {
@@ -868,6 +881,7 @@ namespace ns3
       {
         nextHopIdx = FindNextHopLowTrafficDownstream(neighborhoodSpeed, centerBA, vehiclePos, stopDist);
         std::cout << "Next Hop IDX B " << nextHopIdx << std::endl; 
+        std::cout << "NS: " << neighborhoodSpeed << " centerBA " << centerBA << " vehiclePos " << vehiclePos << " stopDist " << stopDist << std::endl;
             //return node with MDT
       }
       else //medium traffic
@@ -880,6 +894,7 @@ namespace ns3
       {
         return neighborInfo->Get1HopNeighborIP(nextHopIdx);
       }
+      std::cout << "Return Case 3 " << std::endl;
       return Ipv4Address("102.102.102.102");
     }
 
@@ -1463,8 +1478,7 @@ RoutingProtocol::DeferredRouteOutput (Ptr<const Packet> p, const Ipv4Header & he
   m_queuePointer->GetObject<VbpQueue>()->AppendPacket(p); //append packet to queue
   m_queuePointer->GetObject<VbpQueue>()->AppendHeader(header); 
   // m_queuePointer->GetObject<VbpQueue>()->AppendUcb(ucb);
-  // m_queuePointer->GetObject<VbpQueue>()->AppendEcb(ecb); 
-  std::cout << "Queue Size: " << m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() << std::endl;
+  // m_queuePointer->GetObject<VbpQueue>()->AppendEcb(ecb);
 }
 
     // bool
@@ -1604,6 +1618,8 @@ RoutingProtocol::RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bo
       *packetSentIndicator = true;
     }
   }
+  Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+  std::cout << "enqueuePacketIndicator " << enqueuePacketIndicator << " at " << iface.GetLocal() << std::endl;
   // Below if statement causes error once two vehicles get within tx range (when there is a queue).
   // Below code works with caravan script. Problems during two vehicle script (which has a queue)
   if (enqueuePacketIndicator)

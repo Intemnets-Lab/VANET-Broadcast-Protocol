@@ -34,7 +34,7 @@
 // #define SOURCE_START_TIME 1    // seconds
 // #define PK_INTERARRIVAL_TIME 1 // seconds
 // #define DISTANCE 5             // meters
-// #define SPEED 1
+// #define SPEED 3
 // #define FREQ 2.4e9         // Hz
 // #define SYS_LOSS 1         // unitless
 // #define MIN_LOSS 0         // dB
@@ -124,7 +124,7 @@
 //     // vbp
 //     InternetStackHelper stack;
 //     VanetBroadcastHelper vbp; //VanetBroadcastHelper
-//     vbp.SetBroadcastArea({100,-10,150,10});
+//     vbp.SetBroadcastArea({50,-10,100,10});
 //     stack.SetRoutingHelper(vbp);
 //     stack.Install(nodes);
 
@@ -135,14 +135,30 @@
 //     // Set node positions and velocities (x,y,z)
 //     //n0 dst
 //     //n3 src
-//     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(100, 0, 0));
-//     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(0, 0, 0));
-//     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(10, 0, 0));
-//     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-//     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(5, 0, 0));
-//     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-//     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
-//     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
+//     // nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(100, 0, 0));
+//     // nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(0, 0, 0));
+//     // nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(10, 0, 0));
+//     // nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
+//     // nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(5, 0, 0));
+//     // nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
+//     // nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
+//     // nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
+
+
+//     for (int i = 0; i < int(NumNodes-1); i++)
+//     {
+//         if (i == 0)
+//         {
+//             nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector((float)51, 0, 0));
+//             nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((float)0, 0, 0)); // 0.1*i because vehicles will lose neighbors about 50 seconds into simulation. SPEED is original variable here.        
+//         }
+//         else
+//         {
+//         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector((float)DISTANCE * (NumNodes - i), 0, 0));
+//         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((float)SPEED, 0, 0)); // 0.1*i because vehicles will lose neighbors about 50 seconds into simulation. SPEED is original variable here.
+//         }
+//     }
+
 
 //     // Create channel of constant propagation speed and Friis loss. Enable Radiotap link
 //     // layer information. Configure the wifi MAC layer in Ad Hoc mode. Use the 802.11b
@@ -165,7 +181,7 @@
 
 //     // Configure frequency, transmission power, tx gain, rx gain, and sensitivity of the physical layer of n0, n1, n2
 //     std::ostringstream configpath;
-//     for (int i = 0; i < int(NumNodes); i++)
+//     for (int i = 0; i < int(NumNodes-1); i++)
 //     {
 //         configpath << "/NodeList/" << nodes.Get(i)->GetId() << "/DeviceList/*/$ns3::WifiNetDevice/Phy/$ns3::WifiPhy/ChannelNumber";
 //         Config::Set(configpath.str(), UintegerValue(1));
