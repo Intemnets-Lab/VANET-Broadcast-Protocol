@@ -87,20 +87,22 @@
 // // ====================================================================
 
 // #define NET_ADDRESS "10.1.1.0"
-// #define NET_MASK_ADDRESS "255.255.255.0" //first three bytes are for indicating network address. last byte indicates node in network address.
-// //#define BROADCAST_ADDRESS "255.255.255.255" Broadcast to every node on every network
+// #define NET_MASK_ADDRESS "255.255.255.0"
+// #define NET_BROADCAST_ADDRESS "10.1.1.255"
 // #define UDP_PORT 8080
-// #define SOURCES_START_TIME 1 // seconds
-// #define SOURCE_START_TIME 1 // seconds
+// #define SOURCES_START_TIME 1   // seconds
+// #define SOURCE_START_TIME 1    // seconds
 // #define PK_INTERARRIVAL_TIME 1 // seconds
-// #define DISTANCE 5 // meters
-// #define FREQ 2.4e9 // Hz
-// #define SYS_LOSS 1 // unitless
-// #define MIN_LOSS 0 // dB
-// #define TX_POWER 42 // dBm
-// #define TX_GAIN 0 // dB
-// #define RX_GAIN 0 // dB
-// #define RX_SENSITIVITY -80 // dBm
+// #define DISTANCE 5             // meters
+// #define SPEED 1
+// #define FREQ 2.4e9         // Hz
+// #define SYS_LOSS 1         // unitless
+// #define MIN_LOSS 0         // dB
+// #define TX_POWER 110        // dBm
+// #define TX_GAIN 15          // dB
+// #define RX_GAIN 15          // dB
+// #define RX_SENSITIVITY -97 // dBm
+// #define VBP_PORT 8081
 
 // using namespace ns3;
 

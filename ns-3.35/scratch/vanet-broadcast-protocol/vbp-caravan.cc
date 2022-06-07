@@ -38,10 +38,10 @@
 // #define FREQ 2.4e9         // Hz
 // #define SYS_LOSS 1         // unitless
 // #define MIN_LOSS 0         // dB
-// #define TX_POWER 42        // dBm
-// #define TX_GAIN 0          // dB
-// #define RX_GAIN 0          // dB
-// #define RX_SENSITIVITY -80 // dBm
+// #define TX_POWER 110        // dBm
+// #define TX_GAIN 15          // dB
+// #define RX_GAIN 15          // dB
+// #define RX_SENSITIVITY -97 // dBm
 // #define VBP_PORT 8081
 
 // using namespace ns3;

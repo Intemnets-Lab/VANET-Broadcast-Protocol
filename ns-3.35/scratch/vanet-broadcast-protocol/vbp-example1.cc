@@ -34,14 +34,14 @@
 // #define SOURCE_START_TIME 1    // seconds
 // #define PK_INTERARRIVAL_TIME 1 // seconds
 // #define DISTANCE 5             // meters
-// #define SPEED 3
+// #define SPEED 1
 // #define FREQ 2.4e9         // Hz
 // #define SYS_LOSS 1         // unitless
 // #define MIN_LOSS 0         // dB
-// #define TX_POWER 42        // dBm
-// #define TX_GAIN 0          // dB
-// #define RX_GAIN 0          // dB
-// #define RX_SENSITIVITY -80 // dBm
+// #define TX_POWER 110        // dBm
+// #define TX_GAIN 15          // dB
+// #define RX_GAIN 15          // dB
+// #define RX_SENSITIVITY -97 // dBm
 // #define VBP_PORT 8081
 
 // using namespace ns3;
