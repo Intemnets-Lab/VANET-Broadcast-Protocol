@@ -816,15 +816,9 @@ namespace ns3
       bool movingToBA = (vehicleVel.x*vehicleToBA.x + vehicleVel.y*vehicleToBA.y) > 0; // true if moving towards BA
       if (movingToBA) 
       {
-        Ipv4Address dummyNextHopAhead = FindNextHopDownstream(centerBA, movingToBA);
-        nextHopAheadPtr->Set(dummyNextHopAhead.Get());
-        std::cout << "Dummy Next Hop Ahead " << dummyNextHopAhead << std::endl;
-        //nextHopAheadPtr->Set(FindNextHopDownstream(centerBA, movingToBA).Get());
+        nextHopAheadPtr->Set(FindNextHopDownstream(centerBA, movingToBA).Get());
       }
-      Ipv4Address dummyNextHopBehind = FindNextHopUpstream(centerBA, movingToBA);
-      nextHopBehindPtr->Set(dummyNextHopBehind.Get());
-      std::cout << "Dummy Next Hop Behind " << dummyNextHopBehind << std::endl;
-      //nextHopBehindPtr->Set(FindNextHopUpstream(centerBA, movingToBA).Get());
+      nextHopBehindPtr->Set(FindNextHopUpstream(centerBA, movingToBA).Get());
       if (*nextHopAheadPtr == Ipv4Address("102.102.102.102") && *nextHopBehindPtr == Ipv4Address("102.102.102.102"))
       {
         std::cout << "Find First Hop Returns False" << std::endl;

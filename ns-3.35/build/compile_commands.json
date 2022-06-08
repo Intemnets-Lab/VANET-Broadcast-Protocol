@@ -4843,5 +4843,20 @@
     "directory": "/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build",
     "command": "/usr/bin/clang++ -O0 -ggdb -g3 -Wall -Werror -Wno-unused-local-typedefs -Wno-potentially-evaluated-expression -std=c++17 -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 ../scratch/vanet-broadcast-protocol/vbp-neighbor.cc -c -o/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build/scratch/vanet-broadcast-protocol/vbp-neighbor.cc.3.o",
     "file": "../scratch/vanet-broadcast-protocol/vbp-neighbor.cc"
+  },
+  {
+    "directory": "/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build",
+    "command": "/usr/bin/clang++ -O0 -ggdb -g3 -Wall -Werror -Wno-unused-local-typedefs -Wno-potentially-evaluated-expression -std=c++17 -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 ../scratch/vanet-broadcast-protocol/vbp-3x3.cc -c -o/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build/scratch/vanet-broadcast-protocol/vbp-3x3.cc.3.o",
+    "file": "../scratch/vanet-broadcast-protocol/vbp-3x3.cc"
+  },
+  {
+    "directory": "/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build",
+    "command": "/usr/bin/clang++ -O0 -ggdb -g3 -Wall -Werror -Wno-unused-local-typedefs -Wno-potentially-evaluated-expression -std=c++17 -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 ../scratch/vanet-broadcast-protocol/vbp-3x3m.cc -c -o/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build/scratch/vanet-broadcast-protocol/vbp-3x3m.cc.3.o",
+    "file": "../scratch/vanet-broadcast-protocol/vbp-3x3m.cc"
+  },
+  {
+    "directory": "/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build",
+    "command": "/usr/bin/clang++ -O0 -ggdb -g3 -Wall -Werror -Wno-unused-local-typedefs -Wno-potentially-evaluated-expression -std=c++17 -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 ../scratch/vanet-broadcast-protocol/vbp-example4.cc -c -o/Users/william/Documents/Masters/ns-allinone-3.35/ns-3.35/build/scratch/vanet-broadcast-protocol/vbp-example4.cc.3.o",
+    "file": "../scratch/vanet-broadcast-protocol/vbp-example4.cc"
   }
 ]
