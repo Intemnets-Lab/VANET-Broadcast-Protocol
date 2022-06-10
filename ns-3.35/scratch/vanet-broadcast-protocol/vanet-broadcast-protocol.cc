@@ -148,6 +148,7 @@ namespace ns3
       } 
       else
       {
+        std::cout << "Else Case: Send First Hop - Ahead " << nextHopAhead << " Behind " << nextHopBehind << std::endl; 
         // Valid route not found, return loopback
         uint32_t iif = (oif ? m_ipv4->GetInterfaceForDevice (oif) : -1);
         DeferredRouteOutputTag tag (iif);
@@ -816,6 +817,7 @@ namespace ns3
       bool movingToBA = (vehicleVel.x*vehicleToBA.x + vehicleVel.y*vehicleToBA.y) > 0; // true if moving towards BA
       if (movingToBA) 
       {
+        std::cout << "Vehicle moving towards BA" << std::endl;
         nextHopAheadPtr->Set(FindNextHopDownstream(centerBA, movingToBA).Get());
       }
       nextHopBehindPtr->Set(FindNextHopUpstream(centerBA, movingToBA).Get());
@@ -976,6 +978,7 @@ RoutingProtocol::FindNextHopHighTrafficDownstream(Vector centerBA, Vector vehicl
   std::cout << "Next hop based on high traffic, consider neighbors ahead, Min dist to BA" << std::endl;
   Ptr<VbpNeighbors> neighborInfo = m_neighborsListPointer->GetObject<VbpNeighbors>();
   uint16_t numNeighbors = neighborInfo->Get1HopNumNeighbors();
+  std::cout << "FindNextHopHighTrafficDownstream NumNeighbors: " << numNeighbors << std::endl;
   float currentMin = std::numeric_limits<float>::max();
   int furthestIdx = -1;
   float neighborDist;

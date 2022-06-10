@@ -931,6 +931,7 @@ VbpNeighbors::PrintTimes () {
 void 
 VbpNeighbors::PrintNeighborState() {
     // NS_LOG_LOGIC("current time: " << Simulator::Now());
+
     std::cout << "Print Neighbor State: " << std::endl;
     PrintNeighbors2();
     // //PrintTimes ();
@@ -942,7 +943,7 @@ VbpNeighbors::PrintNeighborState() {
     Print1hopFurthestAhead ();
     Print1hopFurthestBehind ();
     PrintAvgSpeeds ();
-    // std::cout << std::endl;  // put space between this and next printout 
+    std::cout << std::endl;  // put space between this and next printout 
 }
 
 

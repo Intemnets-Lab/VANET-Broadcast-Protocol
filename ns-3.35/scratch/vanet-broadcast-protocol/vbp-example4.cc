@@ -132,21 +132,77 @@ int main(int argc, char *argv[])
     mobility.Install(nodes);
 
     //n0 source, n4destination
-     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
-     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(200, 0, 0));
-     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(400, 0, 0));
-     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(600, 0, 0));
-     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
-     nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(800, 0, 0));
-     nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(5, 0, 0));
 
+    // //low traffic. Neighbor list and queue size tests pass.
     //  nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
-    //  nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(2, 0, 0));
-    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
-    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(3, 0, 0));
+    //  nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(15, 0, 0));
+    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(200, 0, 0));
+    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(15, 0, 0));
+    //  nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(400, 0, 0));
+    //  nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(15, 0, 0));
+    //  nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(600, 0, 0));
+    //  nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(15, 0, 0));
+    //  nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(800, 0, 0));
+    //  nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(15, 0, 0));
+
+    // //low & mid traffic. Neighbor list and queue size tests pass.
+    //  nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
+    //  nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(50, 0, 0));
+    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(200, 0, 0));
+    //  nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(50, 0, 0));
+    //  nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(400, 0, 0));
+    //  nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(50, 0, 0));
+    //  nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(600, 0, 0));
+    //  nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(50, 0, 0));
+    //  nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(800, 0, 0));
+    //  nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(50, 0, 0));
+
+
+    //high traffic. neighbor list test passes. Queue size tests does NOT pass. Queue grows on  10.1.1.1. (source vehicle)
+     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(0, 0, 0));
+     nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(200, 0, 0));
+     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(300, 0, 0));
+     nodes.Get(1)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(200, 0, 0));
+     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(300*2, 0, 0));
+     nodes.Get(2)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(200, 0, 0));
+     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(300*3, 0, 0));
+     nodes.Get(3)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(200, 0, 0));
+     nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(300*4, 0, 0));
+     nodes.Get(4)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(200, 0, 0));
+
+     //Meeting June 9
+     // New caravan parameters: Vehicle distance 50 meters. 21 vehicles total.
+     //Set up all caravan tests as below. Multiple neighbors. Find new speeds for low, mid, high traffic level print-outs. 3 simulations
+     //Confirm next hop is selected correctly, Node0 sends packet to Node250 only. Node0 can not send packet to prior vehicle such as Node150.
+     //Run the same neighborlist and queue tests as before. 
+     // 0 50 100 150 200 250 300 350 400 450 500 550 600 650 700 750 800 850 900 950 1000
+
+
+    //Another set of simulations: BA is very-far to the left of caravan. Caravan moves away from BA.
+    //Source is head of caravan (not the tail as in previous sims) Node1000 is source. Do separate sims for the three traffic levels.
+    //Verify routing takes place in opposite direction. Node1000 sends packet to Node750. Node750 sends to Node500...
+    //Queue should only grow in tail node (Node0). 
+
+
+    //Another set of simulations: Source vehicle is middle vehicle (Node500). BA is very far to the right of the caravan. 
+    //Make sure next hop's are correct. Node500 sends packets to Node250 and to Node750. Node750 sends to Node1000 and Node250 sends to Node0.
+    //Queue should grow only at Node0 and Node1000. Confirm all above tests for three traffic levels. 
+
+
+    //Another set of simulations. Source vehicle is middle vehicle (Node500). BA is very far to the LEFT of the caravan. 
+    //Make sure next hop's are correct. Node500 sends packets to Node250 ONLY. Node250 sends to Node0.
+    //Queue should grow only at Node0. Confirm all above tests for three traffic levels. 
+
+    //Also clean up code. Can leave debug messages if they are significant. Comment them out and leave a comment. Get rid of insignificant debug messages.
+    //Include comments on code that explains what is happening.
+
+    //Thesis: Detailed enough so future work students won't need to talk to me to understand codebase. Talk about all issues encountered and what each code
+    // code piece does. It is like a technical reference document. 
+    //Also section on the above 12 simulations ran and their results.
+    //Another section: Installation requirements and software requirements. How to install VANET-Broadcast-Protocol in someone's ns-3 folder.
+    //Create github page for this code.
+
+
 
     // Create channel of constant propagation speed and Friis loss. Enable Radiotap link
     // layer information. Configure the wifi MAC layer in Ad Hoc mode. Use the 802.11b
