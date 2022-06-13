@@ -140,10 +140,24 @@ namespace ns3
       p->AddHeader(routingHeader);
       Ipv4Address nextHopAhead;
       Ipv4Address nextHopBehind;
+      std::cout << "Route Output Origin: " << origin << std::endl;
       std::cout << "Route Output Packet Type: " << routingHeader.GetPacketType() << std::endl;
       if (FindFirstHop(&nextHopAhead, &nextHopBehind)) //find next hop
       {
-        std::cout << "Send First Hop - Ahead " << nextHopAhead << " Behind " << nextHopBehind << std::endl; 
+        std::cout << "Sender FindFirstHop: " << iface.GetAddress() << "\n";
+        std::cout << "Send First Hop - Ahead " << nextHopAhead << " Behind " << nextHopBehind << std::endl;
+        if (iface.GetAddress() == Ipv4Address("10.1.1.1") && nextHopAhead == Ipv4Address("10.1.1.6"))
+        {
+          std::cout << "SRC N0 DST N20 Towards BA: Sender & Receiver Test PASSED" << std::endl;
+        }
+        if (iface.GetAddress() == Ipv4Address("10.1.1.21") && nextHopBehind == Ipv4Address("10.1.1.16"))
+        {
+          std::cout << "SRC N21 DST N0 AWAY BA: Sender & Receiver Test PASSED" << std::endl;
+        }
+        if (iface.GetAddress() == Ipv4Address("10.1.1.11")  && nextHopAhead == Ipv4Address("10.1.1.16"))
+        {
+          std::cout << "SRC N10 DST N0/N21 TOWARDS BA: Sender & Receiver Test PASSED" << std::endl;
+        }  
         SetSendFirstHop(&nextHopAhead,&nextHopBehind,p,dev,iface,src,dst);
       } 
       else
@@ -427,7 +441,7 @@ namespace ns3
       if (destinationHeader.GetPacketType() == m_helloPacketType)
       {
         RecvHello(packet, receiver, sender);
-        std::cout << "Neighbors List: " << "Receiver " << receiver << " Sender " << sender << std::endl;
+        std::cout << "Neighbors List: " << "Receiver " << receiver << " Sender " << sender << " Packet type: " << destinationHeader.GetPacketType() << std::endl;
         m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighbors2();
       }
     }
@@ -642,6 +656,7 @@ namespace ns3
         if (FindFirstHop(&nextHopAhead, &nextHopBehind)) //find next hop
         {
           Ptr<Packet> p = m_queuePointer->GetObject<VbpQueue>()->GetPacket()->Copy();
+          std::cout << "Empty Queue IF Get Header " << std::endl;
           Ipv4Header header = m_queuePointer->GetObject<VbpQueue>()->GetHeader();
           Ipv4Address dst = header.GetDestination();
           Ipv4Address src = header.GetSource();
@@ -659,6 +674,7 @@ namespace ns3
       else // this is a forwarding vehicle
       {
         Ptr<Packet> p = m_queuePointer->GetObject<VbpQueue>()->GetPacket()->Copy();
+        std::cout << "Empty Queue ELSE Get Header " << std::endl;
         Ipv4Header header = m_queuePointer->GetObject<VbpQueue>()->GetHeader();
         Ipv4Address dst = header.GetDestination();
         Ipv4Address src = header.GetSource();
@@ -829,20 +845,6 @@ namespace ns3
       std::cout << "Find First Hop Returns True" << std::endl;
       return true;
     }
-    //original find first hop, void
-    // bool
-    // RoutingProtocol::FindNextHop(Ipv4Address* nextHopAheadPtr,Ipv4Address* nextHopBehindPtr)
-    // {
-    //   if (m_neighborsListPointer->GetObject<VbpNeighbors>()->Get1HopNumNeighborsAhead() == 0)
-    //   {
-    //     return false;
-    //   }
-    //   Ipv4Address nextHop = m_neighborsListPointer->GetObject<VbpNeighbors>()->Get1HopNeighborIPAhead(0);
-    //   nextHopPtr->Set(nextHop.Get());
-    //   return true;
-
-    // }
-
 
     Ipv4Address
     RoutingProtocol::FindNextHopDownstream(Vector centerBA, bool movingToBA)
@@ -855,6 +857,7 @@ namespace ns3
       }
       Ptr<VbpNeighbors> neighborInfo = m_neighborsListPointer->GetObject<VbpNeighbors>();
       uint16_t numNeighbors = neighborInfo->Get1HopNumNeighborsAhead();
+      std::cout << "Downstream numNeighbors " << numNeighbors << std::endl;
       if (numNeighbors == 0) 
       {
         std::cout << "Return Case 2 " << std::endl;
@@ -899,9 +902,11 @@ namespace ns3
     {
       std::cout << "Find Next Hop Upstream " << std::endl;
       Ptr<VbpNeighbors> neighborInfo = m_neighborsListPointer->GetObject<VbpNeighbors>();
-      uint16_t numNeighbors = neighborInfo->Get1HopNumNeighborsAhead();
+      uint16_t numNeighbors = neighborInfo->Get1HopNumNeighborsBehind();
+      std::cout << "FindNextHopUpstream Num Neighbors:" << numNeighbors << std::endl; 
       if (numNeighbors == 0) 
       {
+        std::cout << "Find Next Hop Upstream Returns No Neighbors" << std::endl;
         return Ipv4Address("102.102.102.102"); // same as receiving node since no neighbors
       }
       Vector vehiclePos = m_thisNode->GetObject<MobilityModel>()->GetPosition();
@@ -961,7 +966,8 @@ namespace ns3
 
       if (nextHopIdx >= 0)
       {
-        neighborInfo->Get1HopNeighborIP(nextHopIdx);
+        std::cout << "FindNextHop Upstream IDX>0 " << neighborInfo->Get1HopNeighborIPBehind(nextHopIdx) << std::endl;
+        return neighborInfo->Get1HopNeighborIP(nextHopIdx);
       }
 
       return Ipv4Address("102.102.102.102");
@@ -1468,6 +1474,7 @@ RoutingProtocol::DeferredRouteOutput (Ptr<const Packet> p, const Ipv4Header & he
   {
     std::cout << "Empty Queue: Queue Size Limit Reached" << std::endl;
     Ptr<const Packet> p = m_queuePointer->GetObject<VbpQueue>()->GetPacket();
+    std::cout << "Deferred Route Output Get Header " << std::endl;
     Ipv4Header header = m_queuePointer->GetObject<VbpQueue>()->GetHeader();
     Ipv4RoutingProtocol::ErrorCallback ecb = m_queuePointer->GetObject<VbpQueue>()->GetEcb();
     ecb (p, header, Socket::ERROR_NOTERROR);
@@ -1551,7 +1558,8 @@ RoutingProtocol::RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bo
   //case 1: vehicle already in broadcast area
   VbpRoutingHeader routingHeader;
   p->PeekHeader(routingHeader);
-  std::cout << "RH " << routingHeader.GetPosition2Y() << std::endl;
+  std::cout << "RoutePacket Prev Hop IP: " << routingHeader.GetPrevHopIP() << std::endl;
+  std::cout << "RoutePacket Packet Type: " << routingHeader.GetPacketType() << std::endl;
   if ((routingHeader.GetPosition1X() <= vehiclePos.x) && (vehiclePos.x <= routingHeader.GetPosition2X()))
   {
     std::cout << "Case 1 A " << std::endl;
@@ -1621,8 +1629,10 @@ RoutingProtocol::RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bo
   // Below code works with caravan script. Problems during two vehicle script (which has a queue)
   if (enqueuePacketIndicator)
   {
+    std::cout << "enqueuePacketIndicator Two: " << enqueuePacketIndicator << " at " << iface.GetLocal() << std::endl;
     m_queuePointer->GetObject<VbpQueue>()->AppendPacket(q); //append packet to queue
-    //m_queuePointer->GetObject<VbpQueue>()->AppendHeader(routingHeader); 
+    Ipv4Header header;
+    m_queuePointer->GetObject<VbpQueue>()->AppendHeader(header); 
     // m_queuePointer->GetObject<VbpQueue>()->AppendUcb(ucb);
     // m_queuePointer->GetObject<VbpQueue>()->AppendEcb(ecb);
   }

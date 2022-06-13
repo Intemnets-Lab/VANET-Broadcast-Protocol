@@ -30,42 +30,6 @@ VbpQueue::AppendPacket(Ptr<const Packet> p)
     }
 }
 
-// void
-// VbpQueue::AppendDestination(Ipv4Address destination)
-// {
-//     m_dstQ.push_back(destination);
-// }
-
-// void
-// VbpQueue::AppendSource(Ipv4Address source)
-// {
-//     m_srcQ.push_back(source);
-// }
-
-// void
-// VbpQueue::AppendProtocol(uint8_t protocol)
-// {
-//     m_protocolQ.push_back(protocol);
-// }
-
-// void
-// VbpQueue::AppendUcb(Ipv4RoutingProtocol::UnicastForwardCallback ucb)
-// {
-//     if (!QueueFull())
-//     {
-//         m_ucbQ.push_back(ucb);
-//     }
-// }
-
-// void
-// VbpQueue::AppendEcb(Ipv4RoutingProtocol::ErrorCallback ecb)
-// {
-//     if (!QueueFull())
-//     {
-//         m_ecbQ.push_back(ecb);
-//     }
-// }
-
 void
 VbpQueue::AppendHeader(Ipv4Header header)
 {
@@ -84,7 +48,7 @@ VbpQueue::QueueFull()
 Ptr<const Packet>
 VbpQueue::GetPacket()
 {
-    std::cout << "Get Packet Queue" << std::endl;
+    std::cout << "Get Packet Queue " << m_packetQ.size() << std::endl;
     Ptr<const Packet> p = m_packetQ.front();
     m_packetQ.erase(m_packetQ.begin());
     return p;
@@ -96,30 +60,6 @@ VbpQueue::PeekPacket()
     Ptr<const Packet> p = m_packetQ.front();
     return p;
 }
-
-// Ipv4Address
-// VbpQueue::GetDestination()
-// {
-//     Ipv4Address dst = m_dstQ.front();
-//     m_dstQ.erase(m_dstQ.begin());
-//     return dst;
-// }
-
-// Ipv4Address
-// VbpQueue::GetSource()
-// {
-//     Ipv4Address src = m_srcQ.front();
-//     m_srcQ.erase(m_srcQ.begin());
-//     return src;
-// }
-
-// uint8_t
-// VbpQueue::GetProtocol()
-// {
-//     uint8_t protocol = m_protocolQ.front();
-//     m_protocolQ.erase(m_protocolQ.begin());
-//     return protocol;
-// }
 
 Ipv4RoutingProtocol::UnicastForwardCallback
 VbpQueue::GetUcb()
@@ -140,10 +80,16 @@ VbpQueue::GetEcb()
 Ipv4Header
 VbpQueue::GetHeader()
 {
-   std::cout << "Get Header Queue" << std::endl;
+//    if (m_headerQ.size() >= 0)
+//     {
+   std::cout << "Get Header Queue " << m_headerQ.size() << std::endl;
    Ipv4Header header = m_headerQ.front();
+   std::cout << "Get Header Queue2" << std::endl;
    m_headerQ.erase(m_headerQ.begin());
-   return header;    
+   return header;
+//    }
+//   Ipv4Header dummyHeader;
+//   return dummyHeader;    
 }
 
 uint16_t
