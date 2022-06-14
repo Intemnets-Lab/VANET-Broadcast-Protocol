@@ -441,8 +441,8 @@ namespace ns3
       if (destinationHeader.GetPacketType() == m_helloPacketType)
       {
         RecvHello(packet, receiver, sender);
-        std::cout << "Neighbors List: " << "Receiver " << receiver << " Sender " << sender << " Packet type: " << destinationHeader.GetPacketType() << std::endl;
-        m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighbors2();
+        //  std::cout << "Neighbors List: " << "Receiver " << receiver << " Sender " << sender << " Packet type: " << destinationHeader.GetPacketType() << std::endl;
+        //  m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighbors2();
       }
     }
 
@@ -594,6 +594,8 @@ namespace ns3
         Simulator::Schedule(jitter, &RoutingProtocol::SendHello, this);
         SendTo(socket, packet, destination);
       }
+      Ipv4InterfaceAddress iface2 = m_socketAddresses.begin()->second;
+      std::cout << "PrintNeighborState from SendHello at: " << iface2.GetLocal() << std::endl;
       m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighborState();
     }
 
@@ -891,6 +893,7 @@ namespace ns3
       }
       if (nextHopIdx >= 0)
       {
+        std::cout << "FindNextHop Downstream IDX>0 " << neighborInfo->Get1HopNeighborIP(nextHopIdx) << std::endl;
         return neighborInfo->Get1HopNeighborIP(nextHopIdx);
       }
       std::cout << "Return Case 3 " << std::endl;
@@ -966,7 +969,7 @@ namespace ns3
 
       if (nextHopIdx >= 0)
       {
-        std::cout << "FindNextHop Upstream IDX>0 " << neighborInfo->Get1HopNeighborIPBehind(nextHopIdx) << std::endl;
+        std::cout << "FindNextHop Upstream IDX>0 " << neighborInfo->Get1HopNeighborIP(nextHopIdx) << std::endl;
         return neighborInfo->Get1HopNeighborIP(nextHopIdx);
       }
 
@@ -1004,8 +1007,8 @@ RoutingProtocol::FindNextHopHighTrafficDownstream(Vector centerBA, Vector vehicl
         continue; // if not going to move more than 3 second of driving, hold onto packet
     }
     neighborDist = CalculateDistance(neighborPos, centerBA);
-    std::cout << "Current min dist is:"<< currentMin << ", best idx is "<< furthestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
+    //std::cout << "Current min dist is:"<< currentMin << ", best idx is "<< furthestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
     if (neighborDist < currentMin) {
         // if closer to broadcast area, change current id  
         currentMin = neighborDist;           
@@ -1099,8 +1102,8 @@ RoutingProtocol::FindNextHopLowTrafficDownstream(float neighborHoodSpeed, Vector
     neighborDist = CalculateDistance(neighborPos, centerBA);
     neighborVel = Vector3D(neighborInfo->GetNeighborSpeedX(idx), neighborInfo->GetNeighborSpeedY(idx),0).GetLength();
     neighborMDT = neighborDist/neighborVel;
-    std::cout << "Current MDT is:"<< currentMDT << ", best idx is "<< bestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor MDT is: "<< neighborMDT<<std::endl;
+    //std::cout << "Current MDT is:"<< currentMDT << ", best idx is "<< bestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor MDT is: "<< neighborMDT<<std::endl;
     if (neighborMDT < currentMDT) {
         // if will drive faster to broadcast area, change current id  
         currentMDT = neighborMDT;           
@@ -1143,8 +1146,8 @@ RoutingProtocol::FindNextHopHighTrafficUpstreamToBA(Vector centerBA, Vector vehi
       continue; // if not going to move more than 3 second of driving, hold onto packet
     }
     neighborDist = CalculateDistance(neighborPos, centerBA);
-    std::cout << "Current dist is:"<< currentMax << ", best idx is "<< furthestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
+    //std::cout << "Current dist is:"<< currentMax << ", best idx is "<< furthestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
     if (neighborDist > currentMax) 
     {
       // if closer to broadcast area, change current id  
@@ -1188,8 +1191,8 @@ RoutingProtocol::FindNextHopHighTrafficUpstreamAwayBA(Vector centerBA, Vector ve
       continue; // if not going to move more than 3 second of driving, hold onto packet
     }
     neighborDist = CalculateDistance(neighborPos, centerBA);
-    std::cout << "Current dist is:"<< currentMin << ", best idx is "<< furthestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
+    //std::cout << "Current dist is:"<< currentMin << ", best idx is "<< furthestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", Neighbor dist is: " << neighborDist << ", Neighbor dist is: "<< neighborDist<<std::endl;
     if (neighborDist < currentMin) 
     {
       // if closer to broadcast area, change current id  
@@ -1242,8 +1245,8 @@ RoutingProtocol::FindNextHopMidTrafficUpstreamToBA(float neighborhoodSpeed,Vecto
     neighborVel = Vector3D(neighborInfo->GetNeighborSpeedX(idx), neighborInfo->GetNeighborSpeedY(idx),0).GetLength();
     neighborMDT = neighborDist/neighborVel;
     neighborMax = std::sqrt(neighborMDT*neighborMDT + distToNeighbor*distToNeighbor); 
-    std::cout << "Current Max is:" << currentMax << ", best idx is "<< bestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", dist To Neighbor is: " << distToNeighbor << ", Neighbor Max is: " << neighborMax << std::endl;
+    //std::cout << "Current Max is:" << currentMax << ", best idx is "<< bestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", dist To Neighbor is: " << distToNeighbor << ", Neighbor Max is: " << neighborMax << std::endl;
     if (neighborMax > currentMax) 
     { 
       currentMax = neighborMax;        
@@ -1293,8 +1296,8 @@ RoutingProtocol::FindNextHopMidTrafficUpstreamAwayBA(float neighborhoodSpeed,Vec
     neighborDist = CalculateDistance(neighborPos, centerBA);
     neighborVel = Vector3D(neighborInfo->GetNeighborSpeedX(idx), neighborInfo->GetNeighborSpeedY(idx),0).GetLength();
     neighborMin = std::sqrt(neighborVel*neighborVel + neighborDist*neighborDist); 
-    std::cout << "Current Min is:" << currentMin << ", best idx is "<< bestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", dist To Neighbor is: " << distToNeighbor << ", Neighbor Min is: " << neighborMin << std::endl;
+    //std::cout << "Current Min is:" << currentMin << ", best idx is "<< bestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx << ", dist To Neighbor is: " << distToNeighbor << ", Neighbor Min is: " << neighborMin << std::endl;
     if (neighborMin < currentMin) 
     { 
     //if (neighborInfo->Get1HopNumberOfNodesBehindOfNeighbor(idx) == 0) {
@@ -1346,9 +1349,9 @@ RoutingProtocol::FindNextHopLowTrafficUpstreamToBA(float neighborhoodSpeed,Vecto
     neighborDist = CalculateDistance(neighborPos, centerBA);
     neighborVel = Vector3D(neighborInfo->GetNeighborSpeedX(idx), neighborInfo->GetNeighborSpeedY(idx),0).GetLength();
     neighborMDT = neighborDist/neighborVel;
-    std::cout << "Current MDT is:"<< currentMDT << ", best idx is "<< bestIdx << std::endl;
-    std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx;
-    std::cout << ", Neighbor dist is: " << neighborDist << ", Neighbor MDT is: "<< neighborMDT<<std::endl;
+    //std::cout << "Current MDT is:"<< currentMDT << ", best idx is "<< bestIdx << std::endl;
+    //std::cout << "Neighbor id is: "<< neighborInfo->Get1HopNeighborIP(idx) << ", idx is: " << idx;
+    //std::cout << ", Neighbor dist is: " << neighborDist << ", Neighbor MDT is: "<< neighborMDT<<std::endl;
     if (neighborMDT > currentMDT) 
     {
       currentMDT = neighborMDT;           
@@ -1510,6 +1513,9 @@ RoutingProtocol::DeferredRouteOutput (Ptr<const Packet> p, const Ipv4Header & he
       *nextHopAheadPtr = FindNextHopDownstream(centerBA, movingToBA);
       if (*nextHopAheadPtr == Ipv4Address("102.102.102.102"))
       {
+        Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+        std::cout << "enqueuePacketIndicator true case 1 " << iface.GetAddress() << std::endl;
+        std::cout << "indicator case 1 prevhopip " << prevHopIP << " Direction: " << m_neighborsListPointer->GetObject<VbpNeighbors>()->Get1HopDirectionByIP(prevHopIP) << std::endl;
         //std::cout << "Add to queue" << std::endl;
         // m_queuePointer->GetObject<VbpQueue>()->AppendPacket(p); //append packet to queue
         // m_queuePointer->GetObject<VbpQueue>()->AppendHeader(routingHeader); 
@@ -1532,6 +1538,8 @@ RoutingProtocol::DeferredRouteOutput (Ptr<const Packet> p, const Ipv4Header & he
             // m_queuePointer->GetObject<VbpQueue>()->AppendHeader(header); 
             // m_queuePointer->GetObject<VbpQueue>()->AppendUcb(ucb);
             // m_queuePointer->GetObject<VbpQueue>()->AppendEcb(ecb);
+            Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+            std::cout << "enqueuePacketIndicator true case 2 " << iface.GetAddress() << std::endl;
             *enqueuePacketIndicator = true;  
             return false;
           }
@@ -1558,6 +1566,9 @@ RoutingProtocol::RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bo
   //case 1: vehicle already in broadcast area
   VbpRoutingHeader routingHeader;
   p->PeekHeader(routingHeader);
+  std::cout << "Print Packet \n" << std::endl;
+  p->Print(std::cout);
+  std::cout << "Print Packet END \n" << std::endl;
   std::cout << "RoutePacket Prev Hop IP: " << routingHeader.GetPrevHopIP() << std::endl;
   std::cout << "RoutePacket Packet Type: " << routingHeader.GetPacketType() << std::endl;
   if ((routingHeader.GetPosition1X() <= vehiclePos.x) && (vehiclePos.x <= routingHeader.GetPosition2X()))
@@ -1602,8 +1613,10 @@ RoutingProtocol::RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bo
     rt.SetInterface(iface);
     Ptr<Ipv4L3Protocol> l3 = m_ipv4->GetObject<Ipv4L3Protocol>();
     Ipv4Address thisVehicleIP = iface.GetAddress();
+    q->RemoveHeader(routingHeader);
     routingHeader.SetData(m_dataPacketType, thisVehicleIP, routingHeader.GetPosition1X(), routingHeader.GetPosition1Y(), routingHeader.GetPosition2X(), routingHeader.GetPosition2Y(), routingHeader.GetBroadcastingTime());
-    std::cout << "Find Next Hop: " << std::endl;
+    q->AddHeader(routingHeader);
+    std::cout << "Route Packet Find Next Hop: thisVehicleIP " << thisVehicleIP << std::endl;
     if(nextHopAhead != Ipv4Address("102.102.102.102"))
     {
       std::cout << "Next Hop Ahead Only" << std::endl;

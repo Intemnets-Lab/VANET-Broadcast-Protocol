@@ -48,7 +48,7 @@ VbpQueue::QueueFull()
 Ptr<const Packet>
 VbpQueue::GetPacket()
 {
-    std::cout << "Get Packet Queue " << m_packetQ.size() << std::endl;
+    std::cout << "Get Packet Queue " << std::endl;
     Ptr<const Packet> p = m_packetQ.front();
     m_packetQ.erase(m_packetQ.begin());
     return p;
@@ -80,16 +80,10 @@ VbpQueue::GetEcb()
 Ipv4Header
 VbpQueue::GetHeader()
 {
-//    if (m_headerQ.size() >= 0)
-//     {
-   std::cout << "Get Header Queue " << m_headerQ.size() << std::endl;
+   std::cout << "Get Header Queue " << std::endl;
    Ipv4Header header = m_headerQ.front();
-   std::cout << "Get Header Queue2" << std::endl;
    m_headerQ.erase(m_headerQ.begin());
    return header;
-//    }
-//   Ipv4Header dummyHeader;
-//   return dummyHeader;    
 }
 
 uint16_t

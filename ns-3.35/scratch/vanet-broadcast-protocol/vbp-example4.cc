@@ -152,12 +152,12 @@ int main(int argc, char *argv[])
     //Verify routing takes place in opposite direction. Node1000 sends packet to Node750. Node750 sends to Node500...
     //Queue should only grow in tail node (Node0). 
     float vehicleDistance = 50;
-    float vehicleSpeed = 30; //low 5, medium 15, high 30
+    float vehicleSpeed = 5; //low 5, medium 15, high 30
     for (int i = 0; i < int(NumNodes); i++)
     {
         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(vehicleDistance*i, 0, 0));
         std::cout << nodes.Get(i) << " Vehicle Distance " << vehicleDistance*i << std::endl;
-        nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(vehicleSpeed, 0, 0)); 
+        nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed + 0.0001*i), 0, 0)); 
     }
 
 
@@ -238,10 +238,10 @@ int main(int argc, char *argv[])
     Ipv4InterfaceContainer interfaces = address.Assign(devices); // notify methods (called from this line) will allow us to access interface to tx hello-packets
 
  // =============== SOURCE APP =================
-    Ptr<Socket> udpSourceSocket = Socket::CreateSocket(nodes.Get(0), UdpSocketFactory::GetTypeId());
+    Ptr<Socket> udpSourceSocket = Socket::CreateSocket(nodes.Get(10), UdpSocketFactory::GetTypeId());
     Ptr<MyRandomExpTrafficApp> udpSourceAppPtr = CreateObject<MyRandomExpTrafficApp>();
     udpSourceAppPtr->Setup(udpSourceSocket, Ipv4Address(NET_BROADCAST_ADDRESS), VBP_PORT, PacketSize, DataRate(AppDataRate), PRNGRunNumber);
-    nodes.Get(0)->AddApplication(udpSourceAppPtr);
+    nodes.Get(10)->AddApplication(udpSourceAppPtr);
     //udpSourceSocket->SetRecvCallback(MakeCallback(&ReceivePacket));
     udpSourceAppPtr->SetStartTime(Seconds(2));
     // =============== SOURCE APP =================
