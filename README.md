@@ -27,5 +27,5 @@ Users must set the broadcast area after calling '''VanetBroadcastHelper'''.
     stack.Install(nodes);
 ```
 
-The broadcast area is defined as [insert image here]
+The broadcast area is defined as ![Broadcast Area](BA_diagram.png.png "Broadcast Area Definition")
 
