@@ -594,8 +594,8 @@ namespace ns3
         Simulator::Schedule(jitter, &RoutingProtocol::SendHello, this);
         SendTo(socket, packet, destination);
       }
-      Ipv4InterfaceAddress iface2 = m_socketAddresses.begin()->second;
-      std::cout << "PrintNeighborState from SendHello at: " << iface2.GetLocal() << std::endl;
+      //Ipv4InterfaceAddress iface2 = m_socketAddresses.begin()->second;
+      //std::cout << "PrintNeighborState from SendHello at: " << iface2.GetLocal() << std::endl;
       m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighborState();
     }
 

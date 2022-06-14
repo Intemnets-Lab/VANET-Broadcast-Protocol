@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     // start of the interfering transmission, packet size of primary and interfering nodes, and number
     // of packets transmitted by primary and interfering nodes.
     std::string PhyMode("DsssRate1Mbps");
-    uint32_t NumNodes = 21;
+    uint32_t NumNodes = 22;
     double PrimaryTxGain = TX_GAIN;     // dBm
     double InterferingTxGain = TX_GAIN; // dBm
     double TimeToInterfere = 0;         // uS
@@ -150,16 +150,42 @@ int main(int argc, char *argv[])
     //Another set of simulations: BA is very-far to the left of caravan. Caravan moves away from BA.
     //Source is head of caravan (not the tail as in previous sims) Node1000 is source. Do separate sims for the three traffic levels.
     //Verify routing takes place in opposite direction. Node1000 sends packet to Node750. Node750 sends to Node500...
-    //Queue should only grow in tail node (Node0). 
+    //Queue should only grow in tail node (Node0).
+
+    //experiments 1-4
+    // float vehicleDistance = 50;
+    // float vehicleSpeed = 15; //low 5, medium 15, high 30
+    // for (int i = 0; i < int(NumNodes); i++)
+    // {
+    //     nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(vehicleDistance*i, 0, 0));
+    //     std::cout << nodes.Get(i) << " Vehicle Distance " << vehicleDistance*i << std::endl;
+    //     nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed + 0.0001*i), 0, 0)); 
+    // }
+
+    //empty queue experiment
     float vehicleDistance = 50;
-    float vehicleSpeed = 5; //low 5, medium 15, high 30
+    float vehicleSpeed = 15; //low 5, medium 15, high 30
     for (int i = 0; i < int(NumNodes); i++)
     {
+        if (i == NumNodes-1)
+        {
+            //BA to right
+            nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2, 0, 0));
+            std::cout << nodes.Get(i) << "EmptyQueue Vehicle Distance " << NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2 << std::endl;
+            nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed/vehicleSpeed), 0, 0)); 
+
+            // //BA to left
+            // nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(-(50 + vehicleSpeed*SimulationTime/2), 0, 0));
+            // std::cout << nodes.Get(i) << "EmptyQueue Vehicle Distance " << NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2 << std::endl;
+            // nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed*2), 0, 0)); 
+        }
+        else
+        {
         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(vehicleDistance*i, 0, 0));
         std::cout << nodes.Get(i) << " Vehicle Distance " << vehicleDistance*i << std::endl;
-        nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed + 0.0001*i), 0, 0)); 
+        nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed + 0.0001*i), 0, 0));
+        } 
     }
-
 
     //Another set of simulations: Source vehicle is middle vehicle (Node500). BA is very far to the right of the caravan. 
     //Make sure next hop's are correct. Node500 sends packets to Node250 and to Node750. Node750 sends to Node1000 and Node250 sends to Node0.
@@ -238,10 +264,10 @@ int main(int argc, char *argv[])
     Ipv4InterfaceContainer interfaces = address.Assign(devices); // notify methods (called from this line) will allow us to access interface to tx hello-packets
 
  // =============== SOURCE APP =================
-    Ptr<Socket> udpSourceSocket = Socket::CreateSocket(nodes.Get(10), UdpSocketFactory::GetTypeId());
+    Ptr<Socket> udpSourceSocket = Socket::CreateSocket(nodes.Get(0), UdpSocketFactory::GetTypeId());
     Ptr<MyRandomExpTrafficApp> udpSourceAppPtr = CreateObject<MyRandomExpTrafficApp>();
     udpSourceAppPtr->Setup(udpSourceSocket, Ipv4Address(NET_BROADCAST_ADDRESS), VBP_PORT, PacketSize, DataRate(AppDataRate), PRNGRunNumber);
-    nodes.Get(10)->AddApplication(udpSourceAppPtr);
+    nodes.Get(0)->AddApplication(udpSourceAppPtr);
     //udpSourceSocket->SetRecvCallback(MakeCallback(&ReceivePacket));
     udpSourceAppPtr->SetStartTime(Seconds(2));
     // =============== SOURCE APP =================

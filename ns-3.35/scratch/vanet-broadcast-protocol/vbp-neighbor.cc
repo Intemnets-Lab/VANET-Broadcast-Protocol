@@ -932,9 +932,9 @@ void
 VbpNeighbors::PrintNeighborState() {
     // NS_LOG_LOGIC("current time: " << Simulator::Now());
     // std::cout << "Print Neighbor State at: " << std::endl;
-    PrintNeighbors2();
+    //PrintNeighbors2();
     // //PrintTimes ();
-    PrintDirections();
+    //PrintDirections();
     // PrintNeighborsAhead();
     // PrintNeighborsBehind();
     // PrintNumNeighborsAheadBehind ();
