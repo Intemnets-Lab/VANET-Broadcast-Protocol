@@ -11,14 +11,16 @@ cd ns-allinone-3.35
 ./build.py
 ```
 
-VBP source files and examples can be found at
+Source files for VBP and examples can be found in the following directory
 ```bash
-/ns-allinone-3.35/ns-3.35/scratch/vanet-broadcast-protocol
+/ns-allinone-3.35/ns-3.35/scratch/vanet-broadcast-protocol/
 ```
 
 VBP can be added to simulation scripts in a similar manner to other routing protocols.
-Users must set the broadcast area after calling '''VanetBroadcastHelper'''.
+After calling <code>VanetBroadcastHelper</code> users must set the broadcast area (BA).
+The BA is set through <code>SetBroadcastArea({$x_{1}$, $y_{1}$, $x_{2}$, $y_{2}$})</code> where ($x_1$, $y_1$) is the upper-left corner of the BA and ($x_2$, $y_2$) is the bottom-right corner of the BA. The $y-axis$ is inverted.
 
+The following example shows how to call <code>VanetBroadcastHelper</code> and define <code>SetBroadcastArea</code> for specific coordinates. 
 ```c++
     InternetStackHelper stack;
     VanetBroadcastHelper vbp; //VanetBroadcastHelper
@@ -27,7 +29,7 @@ Users must set the broadcast area after calling '''VanetBroadcastHelper'''.
     stack.Install(nodes);
 ```
 
-<img src="BA_diagram.png" alt="drawing" width="200"/>
-
-The broadcast area is defined as ![Broadcast Area](BA_diagram.png "Broadcast Area Definition")
+<center>
+<img src="BA_diagram.png" alt="drawing" width="475"/>
+</center>
 
