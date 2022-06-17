@@ -1,7 +1,7 @@
 # VANET Broadcast Protocol
  VBP
 
-VANET Broadcast Protocol (VBP) is a multi-hop routing protocol made for vehicular communications. It is built on top of an open source network simulator tool called [ns-3](https://www.nsnam.org/about/).
+VANET Broadcast Protocol (VBP) is a multi-hop routing protocol made for vehicular networks. It is built on top of an open source network simulator tool called [ns-3](https://www.nsnam.org/about/).
 
 ### Installation
 

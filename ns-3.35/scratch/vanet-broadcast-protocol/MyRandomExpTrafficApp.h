@@ -79,7 +79,7 @@ namespace ns3
     m_socketptr->Bind(InetSocketAddress(Ipv4Address::GetAny(), m_portNum));
     //m_socketptr->Connect(InetSocketAddress(Ipv4Address("255.255.255.255"), m_portNum));
     m_socketptr->Connect(InetSocketAddress(m_netBroadcastAddress, m_portNum));
-    m_socketptr->SetAllowBroadcast(true);
+    //m_socketptr->SetAllowBroadcast(true);
     SendPacket();
   }
 

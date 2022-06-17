@@ -56,7 +56,7 @@ namespace ns3
     m_running = true;
     // set socket to broadcast to all neighbors
     m_socketptr->Bind(InetSocketAddress(Ipv4Address::GetAny(), m_portNum));
-    m_socketptr->SetAllowBroadcast(true);
+    //m_socketptr->SetAllowBroadcast(true);
     m_socketptr->Connect(InetSocketAddress(Ipv4Address("255.255.255.255"), m_portNum));
   }
 

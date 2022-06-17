@@ -105,10 +105,6 @@ namespace ns3
       m_broadcastArea[3] = NAN;
       Ptr<VbpQueue> m_queuePointer2 = CreateObject<VbpQueue>();
       m_queuePointer->AggregateObject(m_queuePointer2);
-      //VbpNextHopFinder m_nextHopFinder;
-      // Ptr<VbpNextHopFinder> m_nextHopPointer2 = CreateObject<VbpNextHopFinder>();
-      //m_nextHopPointer->AggregateObject(m_nextHopPointer2);
-      //m_nextHopPointer = &nextHopFinder;
       ScheduleEmptyQueue();
     }
 
@@ -119,6 +115,10 @@ namespace ns3
     Ptr<Ipv4Route>
     RoutingProtocol::RouteOutput(Ptr<Packet> p, const Ipv4Header &header, Ptr<NetDevice> oif, Socket::SocketErrno &sockerr)
     {
+      // std::cout << "Packet P RO One: \n" << std::endl;
+      // p->Print(std::cout);
+      // std::cout << "www\n" << std::endl;
+
       std::cout << "Route Output" << std::endl;
       Ptr<Ipv4Route> route;
       NS_LOG_FUNCTION (this << header << (oif ? oif->GetIfIndex () : 0));
@@ -264,6 +264,9 @@ namespace ns3
                                 Ptr<const NetDevice> idev, UnicastForwardCallback ucb,
                                 MulticastForwardCallback mcb, LocalDeliverCallback lcb, ErrorCallback ecb)
     {
+      // std::cout << "Packet P RI One: \n" << std::endl;
+      // p->Print(std::cout);
+      // std::cout << "qqq\n" << std::endl;
       NS_LOG_FUNCTION (this << p->GetUid () << header.GetDestination () << idev->GetAddress ());
       if (m_socketAddresses.empty())
       {
@@ -309,11 +312,47 @@ namespace ns3
             std::cout << "Protocol Number = 253, VBP Data Packet at " << iface.GetLocal() << std::endl;
             bool packetSentIndicator = false;
             Ptr<Packet> q = p->Copy();
+            // std::cout << "Packet Q RI One: \n" << std::endl;
+            // q->Print(std::cout);
+            // std::cout << "\n" << std::endl;
             bool lcbIndicator = RoutePacket(q, dst, src, &packetSentIndicator); //true lcb. false no lcb
             if (lcbIndicator)
             {
               std::cout << "local delivery at " << iface.GetLocal() << std::endl;
-              lcb(q,header,iif);
+              UdpHeader udpHead;
+              udpHead.SetDestinationPort(8081);
+              udpHead.SetSourcePort(8081);
+              udpHead.InitializeChecksum(header.GetSource(), header.GetDestination(), PROT_NUMBER);
+              q->AddHeader(udpHead);
+              Ipv4Header headerCopy;
+              //headerCopy.SetDestination(Ipv4Address("127.0.0.1"));
+              headerCopy.SetDestination(header.GetDestination());
+              headerCopy.SetDscp(header.GetDscp());
+              headerCopy.SetEcn(header.GetEcn());
+              headerCopy.SetIdentification(header.GetIdentification());
+              //headerCopy.SetInstanceTypeId(header.GetInstanceTypeId());
+              headerCopy.SetPayloadSize(header.GetPayloadSize());
+              headerCopy.SetProtocol(17);
+              //headerCopy.SetSerializedSize(header.GetSerializedSize());
+              headerCopy.SetSource(header.GetSource());
+              headerCopy.SetTos(header.GetTos());
+              headerCopy.SetTtl(header.GetTtl());
+              std::cout << "Get Destination " << header.GetDestination() << std::endl;
+              std::cout << "Get Dscp " <<header.GetDscp()<< std::endl;
+              std::cout << "Get Ecn " <<header.GetEcn()<< std::endl;
+              std::cout << "Get identification " <<header.GetIdentification()<< std::endl;
+              std::cout << "Get Instance type id " <<header.GetInstanceTypeId()<< std::endl;
+              std::cout << "Get Payload Size " <<header.GetPayloadSize()<< std::endl;
+              uint8_t protocol_numb2 = header.GetProtocol();
+              std::cout << "Get Protocol " << protocol_numb2 << std::endl;
+              std::cout << "Get Serialize Size " <<header.GetSerializedSize()<< std::endl;
+              std::cout << "Get Source " <<header.GetSource()<< std::endl;
+              std::cout << "Get Tos " <<header.GetTos()<< std::endl;
+              std::cout << "Get Ttl " <<header.GetTtl()<< std::endl;
+              std::cout << "\n" << std::endl;
+              q->Print(std::cout);
+              std::cout << "\n" << std::endl;
+              lcb(q,headerCopy,iif);
             }
             return true;
           }
