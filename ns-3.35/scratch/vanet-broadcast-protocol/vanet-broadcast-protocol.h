@@ -91,19 +91,127 @@ namespace ns3
       std::map<Ptr<Socket>, Ipv4InterfaceAddress> m_socketSubnetBroadcastAddresses;
       /// Raw unicast socket per each IP interface, map socket -> iface address (IP + mask)
       std::map<Ptr<Socket>, Ipv4InterfaceAddress> m_socketAddresses;
+
+      //Routing Algorithms
+      /**
+       * Finds the first hop
+       * \param nextHopAheadPtr 
+       * \param nextHopBehindPtr
+       * \returns true if first hop found
+      */
       bool FindFirstHop(Ipv4Address* nextHopAheadPtr, Ipv4Address* nextHopBehindPtr);
-     // bool FindNextHop(Ipv4Address* nextHopPtr);
+      /**
+       * Finds the next hop
+       * \param nextHopAheadPtr 
+       * \param nextHopBehindPtr
+       * \param centerBA coordinates of center of the broadcast area
+       * \param movingToBA is vehicle moving towards broadcast area
+       * \param closeToBA will vehicle reach the broadcast area before expiration
+       * \param enqueuePacketIndicator is packet placed in queue
+       * \param prevHopIP IP address of previous vehicle that held the packet
+       * \returns true if next hop found
+      */
       bool FindNextHop(Ipv4Address* nextHopAheadPtr,Ipv4Address* nextHopBehindPtr,Vector centerBA, bool movingToBA, bool closeToBA, bool *enqueuePacketIndicator, Ipv4Address prevHopIP);
+      /**
+       * Finds the next hop downstream
+       * \param centerBA coordinates of center of the broadcast area
+       * \param movingToBA is vehicle moving towards broadcast area
+       * \returns IP address of one-hop neighbor if neighbors found. Return 102.102.102.102 if no neighbor
+      */
       Ipv4Address FindNextHopDownstream(Vector centerBA, bool movingToBA);
+      /**
+       * Finds the next hop upstream
+       * \param centerBA coordinates of center of the broadcast area
+       * \param movingToBA is vehicle moving towards broadcast area
+       * \returns IP address of one-hop neighbor if neighbors found. Return 102.102.102.102 if no neighbor
+      */
       Ipv4Address FindNextHopUpstream(Vector centerBA, bool movingToBA);
+      /**
+       * Finds the next hop index in downstream heavy traffic based on vehicle closest to broadcast area (if moving towards BA)
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of furthest ahead vehicle if moving towards broadcast area
+      */
       int FindNextHopHighTrafficDownstream(Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in downstream medium traffic based on vehicle with max of sqrt(speed^2 + distToNeighbor^2)
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop if moving towards broadcast area
+      */
       int FindNextHopMidTrafficDownstream(float neighborhoodSpeed, Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in downstream low traffic based on vehicle with minimum message delivery time
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop if moving towards broadcast area
+      */
       int FindNextHopLowTrafficDownstream(float neighborhoodSpeed, Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds the next hop index in upstream heavy traffic based on vehicle closest to broadcast area and moving towards BA
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of furthest ahead vehicle moving towards broadcast area
+      */
       int FindNextHopHighTrafficUpstreamToBA(Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds the next hop index in upstream heavy traffic moving away from the broadcast area based on neighbors behind that are minimum distance to the BA
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of minimum distance vehicle from broadcast area
+      */
       int FindNextHopHighTrafficUpstreamAwayBA(Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in upstream medium traffic moving towards the broadcast area based on vehicle with max of sqrt(MDT^2 + distToNeighbor^2)
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop moving towards broadcast area
+      */
       int FindNextHopMidTrafficUpstreamToBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in upstream medium traffic moving away from the broadcast area based on vehicle with min of sqrt(speed^2 + distToNeighborToBA^2)
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop moving away from the broadcast area
+      */
       int FindNextHopMidTrafficUpstreamAwayBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in upstream low traffic towards the broadcast area based on neighbors behind with maximum MDT
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop moving towards broadcast area
+      */
       int FindNextHopLowTrafficUpstreamToBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Finds next hop index in upstream low traffic away from the broadcast area based on neighbors behind with minimum speed
+       * \param neighborhoodSpeed average speed of a one-hop vehicle neighborhood
+       * \param centerBA coordinates of center of the broadcast area
+       * \param vehiclePos coordinates of vehicle
+       * \param stopDist distance it takes for vehicle to stop (3 second rule)
+       * 
+       * \returns index of best hop moving away from the broadcast area
+      */
       int FindNextHopLowTrafficUpstreamAwayBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
       void EmptyQueue();
       void ScheduleEmptyQueue();
@@ -114,7 +222,7 @@ namespace ns3
        * Send packet to neighbor
        * \param socket input socket
        * \param p the packet to route
-       * \param destination is supposed to be IP address of my neighbor.
+       * \param destination IP address of neighbor.
        */
       void SendTo(Ptr<Socket> socket, Ptr<Packet> packet, Ipv4Address destination);
       /**
@@ -125,8 +233,8 @@ namespace ns3
       /**
        * Receive and process periodic packets.
        * \param p the packet to route
-       * \param receiver is supposed to be my interface
-       * \param sender is supposed to be IP address of my neighbor.
+       * \param receiver my interface
+       * \param sender IP address of neighbor.
        */
       void RecvHello(Ptr<Packet> p, Ipv4Address receiver, Ipv4Address sender);
 
