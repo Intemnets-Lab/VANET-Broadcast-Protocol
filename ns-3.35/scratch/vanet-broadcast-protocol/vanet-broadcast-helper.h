@@ -34,7 +34,11 @@ namespace ns3
      * This method controls the attributes of ns3::vbp::RoutingProtocol
      */
     void Set(std::string name, const AttributeValue &value);
-
+    /**
+     * Sets broadcast area coordinates as {(x1,y1,x2,y2)} where (x1,y1) are the upper left corner of the BA
+     * and (x2,y2) are the bottom right corner of the BA
+     * \param broadcastArea broadcast area coordinates
+    */
     void SetBroadcastArea(std::vector<float> broadcastArea);
     std::vector<float> GetBroadcastArea();
 

@@ -28,7 +28,6 @@ namespace ns3
  void VbpRoutingHeader::Print (std::ostream &os) const {
    // This method is invoked by the packet printing
    // routines to print the content of my header.
-   // os << "Packet type: " << GetPacketType() << std::endl;
     os << "Previous Hop: " << GetPrevHopIP() << std::endl;
     os << "point 1: " << GetPosition1X() << ", " << GetPosition1Y() << std::endl;
     os << "point 2: " << GetPosition2X() << ", " << GetPosition2Y() << std::endl;
@@ -38,7 +37,6 @@ namespace ns3
  uint32_t VbpRoutingHeader::GetSerializedSize (void) const {
    // we reserve bytes for our header.
    uint32_t totalSize = sizeof(m_packetType) + sizeof(m_prevHopIP) + sizeof(m_Position1X) + sizeof(m_Position1Y) + sizeof(m_Position2X) + sizeof(m_Position2Y) + sizeof(m_BATime);
-   //uint32_t totalSize = sizeof(m_packetType) + sizeof(m_sourceIP) + sizeof(m_prevHopIP) + sizeof(m_nextHopIdAhead) + sizeof(m_nextHopIdBehind) + sizeof(m_position1X) + sizeof(m_position1Y) + sizeof(m_Position2X) + sizeof(m_Position2Y) + sizeof(m_BATime);
    //size of header in bytes
    return totalSize;
  }
@@ -66,20 +64,12 @@ namespace ns3
  }
 
  uint32_t VbpRoutingHeader::Deserialize (Buffer::Iterator start) {
-   // we read them in network byte order and store them
-   //std::cout << "VBPRoutingHeader Deserialize "  << std::endl; 
    m_packetType = start.ReadU8 ();
-   //uint16_t count; count = 0;
    while (m_packetType != 'd')
    {
       //std::cout << "Count: " << ++count << std::endl;
       m_packetType = start.ReadU8 ();
    }
-
-//    if (count != 8)
-//    {
-//         std::cout << "Deserialize not working" << std::endl;
-//    }
 
    ReadFrom(start, m_prevHopIP);
    // use for loop to move 8 bits at a time to read each float
@@ -102,7 +92,6 @@ namespace ns3
    return GetSerializedSize();
  }
  
- //void VbpRoutingHeader::SetData (uint8_t packetType, Ipv4Address sourceIP, Ipv4Address prevHopIP, uint16_t nextHopIdAhead, uint16_t nextHopIdBehind, float pos1X, float pos1Y, float pos2X, float pos2Y, float broadcastTime) {
  void VbpRoutingHeader::SetData (uint8_t packetType, Ipv4Address prevHopIP, float pos1X, float pos1Y, float pos2X, float pos2Y, float broadcastTime) {
    m_packetType = packetType;
    m_prevHopIP = prevHopIP;
@@ -187,12 +176,6 @@ float VbpRoutingHeader::GetBroadcastingTime(void) const {
         asByte[byteNum] = m_BATime[byteNum];
    }
    return temp;
-}
-
-void
-VbpRoutingHeader::SetPrevHopIP(Ipv4Address prevHopIP)
-{
-     m_prevHopIP = prevHopIP;
 }
 
 } //namespace vbp

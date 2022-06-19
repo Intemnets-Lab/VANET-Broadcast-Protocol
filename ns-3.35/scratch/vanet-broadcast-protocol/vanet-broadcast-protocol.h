@@ -19,7 +19,6 @@
 #include "ns3/ipv4-route.h"
 #include "vbp-data-packet-header.h"
 #include "vbp-queue.h"
-#include "vbp-next-hop-finder.h"
 
 namespace ns3
 {
@@ -30,17 +29,39 @@ namespace ns3
     {
     public:
       /**
-       * \brief Get the type ID.
+       * Get the type ID
        * \return the object TypeId
        */
       static TypeId GetTypeId(void);
-      static const uint8_t PROT_NUMBER; //!< protocol number
-      static const uint32_t VBP_HELLO_PORT;
+      static const uint8_t PROT_NUMBER; //!< protocol number for VBP
+      static const uint32_t VBP_HELLO_PORT; // Port for control (hello) packets
       /// constructor
       RoutingProtocol();
       virtual ~RoutingProtocol();
-      // Inherited from Ipv4RoutingProtocol
+      /**
+       * Query routing cache for an existing route, for an outbound packet.
+       * This lookup is used by transport protocols. It does not cause any packet to be forwarded, and is synchronous. Can be used for multicast or unicast. The Linux equivalent is ip_route_output()
+       * The header input parameter may have an uninitialized value for the source address, but the destination address should always be properly set by the caller.
+       * \param p packet to be routed. Note that this method may modify the packet. Callers may also pass in a null pointer.
+       * \param header input parameter (used to form key to search for the route)
+       * \param oif Output interface Netdevice. May be zero, or may be bound via socket options to a particular output interface.
+       * \param sockerr Output parameter; socket errno
+      */
       Ptr<Ipv4Route> RouteOutput(Ptr<Packet> p, const Ipv4Header &header, Ptr<NetDevice> oif, Socket::SocketErrno &sockerr);
+      /**
+       * Route an input packet (to be forwarded or locally delivered)
+       * This lookup is used in the forwarding process. The packet is handed over to the Ipv4RoutingProtocol, and will get forwarded onward by one of the callbacks.
+       * The Linux equivalent is ip_route_input(). There are four valid outcomes, and a matching callbacks to handle each.
+       * \param p received packet
+       * \param header input parameter used to form a search key for a route
+       * \param idev Pointer to ingress network device
+       * \param ucb Callback for the case in which the packet is to be forwarded as unicast
+       * \param mcb Callback for the case in which the packet is to be forwarded as multicast
+       * \param lcb Callback for the case in which the packet is to be locally delivered
+       * \param ecb Callback to call if there is an error in forwarding
+       * 
+       * \returns true if the Ipv4RoutingProtocol takes responsibility for forwarding or delivering the packet, false otherwise
+      */
       bool RouteInput(Ptr<const Packet> p,
                       const Ipv4Header &header,
                       Ptr<const NetDevice> idev,
@@ -48,34 +69,74 @@ namespace ns3
                       MulticastForwardCallback mcb,
                       LocalDeliverCallback lcb,
                       ErrorCallback ecb);
+      /**
+       * 
+       * \param ipv4 the ipv4 object this routing protocol is being associated with
+      */
       virtual void SetIpv4(Ptr<Ipv4> ipv4);
+      /**
+       * Three cases for routing packets. 1. vehicle already in the broadcast area. 2. vehicle not in BA but will reach BA before expiration.
+       * 3. calls FindNextHop().
+       * 
+       * \param p packet to be routed
+       * \param dst destination of packet
+       * \param src source of packet
+       * \param packetSentIndicator set to true after packet is sent using Ipv4L3Protocol
+       * 
+       * \returns true if packet will be routed and lcb will be called. Otherwise, false and lcb will not be called.
+      */
       bool RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bool *packetSentIndicator);
+      /**
+       * Sets broadcast area coordinates as {(x1,y1,x2,y2)} where (x1,y1) are the upper left corner of the BA
+       * and (x2,y2) are the bottom right corner of the BA
+       * \param broadcastArea broadcast area coordinates
+      */
       void SetBroadcastArea(std::vector<float> broadcastArea);
       std::vector<float> GetBroadcastArea();
+      /**
+       * Print the Routing Table entries.
+       * \param stream The ostream the Routing table is printed to
+       * \param unit time unit to be used in the report
+      */
       virtual void PrintRoutingTable(Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S) const;
+      /**
+       * Protocols are expected to implement this method to be notified whenever a new address is added to an interface. 
+       * Typically used to add a 'network route' on an interface. Can be invoked on an up or down interface.
+       * \param interface the index of the interface we are being notified about
+       * \param address a new address being added to an interface
+      */
       virtual void NotifyAddAddress(uint32_t interface, Ipv4InterfaceAddress address);
+      /**
+       * Protocols are expected to implement this method to be notified of the state change of an interface in a node.
+       * \param interface the index of the interface we are being notified about
+      */
       virtual void NotifyInterfaceDown(uint32_t interface);
+      /**
+       * Protocols are expected to implement this method to be notified of the state change of an interface in a node.
+       * \param interface the index of the interface we are being notified about
+      */
       virtual void NotifyInterfaceUp(uint32_t interface);
+      /**
+       * Protocols are expected to implement this method to be notified whenever a new address is removed from an interface. 
+       * Typically used to remove the 'network route' of an interface. Can be invoked on an up or down interface.
+       * \param interface the index of the interface we are being notified about
+       * \param address a new address being added to an interface
+      */
       virtual void NotifyRemoveAddress(uint32_t interface, Ipv4InterfaceAddress address);
-      // Periodic Packets
-      void SendHello(void);
-      void StartHelloTx(void);
+      void SendHello(void); // Adds hello header information to packet to be sent
+      void StartHelloTx(void); //Schedules transmission of hello headers
 
     private:
-      int m_maxDistance;
+      int m_maxDistance; // maximum distance of one hop [meters]
       int m_txCutoffPercentage;
-      float m_vcHighTraffic;
-      float m_vcLowTraffic;
-      //VbpNextHopFinder m_nextHopFinder;
-      float m_emptyQueuePeriod;
-      int m_BroadcastTime;
-      /// Routing table
-      RoutingTable m_routingTable;
-      //Protocol parameters
-      uint8_t m_helloPacketType; ///< Set packet type to hello 'h'
-      uint8_t m_dataPacketType;
-
-      Time m_activeRouteTimeout; ///< Period of time during which the route is considered to be valid.
+      float m_vcHighTraffic; // high traffic level based on LOS
+      float m_vcLowTraffic; // low traffic level based on LOS
+      float m_emptyQueuePeriod; // frequency EmptyQueue() should be called [seconds]
+      int m_BroadcastTime; // amount of time broadcast area will be active [seconds]
+      RoutingTable m_routingTable; // Routing table
+      uint8_t m_helloPacketType; // Control packet type 'h'
+      uint8_t m_dataPacketType;  // Data packet type 'd'
+      Time m_activeRouteTimeout; //Period of time during which the route is considered to be valid
       // Loopback device used to defer RREQ until packet will be fully formed
       Ptr<NetDevice> m_lo;
       /// Provides uniform random variables
@@ -89,7 +150,7 @@ namespace ns3
       std::vector<float> m_broadcastArea = std::vector<float>(4,0);
       // Raw subnet directed broadcast socket per each IP interface, map socket -> iface address (IP + mask)
       std::map<Ptr<Socket>, Ipv4InterfaceAddress> m_socketSubnetBroadcastAddresses;
-      /// Raw unicast socket per each IP interface, map socket -> iface address (IP + mask)
+      // Raw unicast socket per each IP interface, map socket -> iface address (IP + mask)
       std::map<Ptr<Socket>, Ipv4InterfaceAddress> m_socketAddresses;
 
       //Routing Algorithms
@@ -213,11 +274,29 @@ namespace ns3
        * \returns index of best hop moving away from the broadcast area
       */
       int FindNextHopLowTrafficUpstreamAwayBA(float neighborhoodSpeed,Vector centerBA, Vector vehiclePos, float stopDist);
+      /**
+       * Empties the queue when queue size is greater than zero
+       * 
+      */
       void EmptyQueue();
+      /**
+       * Schedules EmptyQueue() based on definition of m_emptyQueuePeriod in the constructor
+       * 
+      */
       void ScheduleEmptyQueue();
+      /**
+       * Sets the route for data packets and sends using Ipv4L3Protocol
+       * \param nextHopAheadPtr 
+       * \param nextHopBehindPtr
+       * \param p packet to be sent
+       * \param dev device
+       * \param iface device interface
+       * \param src IP address of source node
+       * \param dst IP address of destination node
+       * 
+       * \returns index of best hop moving away from the broadcast area
+      */
       void SetSendFirstHop(Ipv4Address* nextHopAheadPtr,Ipv4Address* nextHopBehindPtr,Ptr<Packet> p,Ptr<NetDevice> dev ,Ipv4InterfaceAddress iface,Ipv4Address src,Ipv4Address dst);
-
-      Ptr<Socket> FindSocketWithInterfaceAddress(Ipv4InterfaceAddress iface) const;
       /**
        * Send packet to neighbor
        * \param socket input socket

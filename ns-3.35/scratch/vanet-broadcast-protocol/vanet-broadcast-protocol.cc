@@ -497,7 +497,6 @@ namespace ns3
     void
     RoutingProtocol::SendHello()
     {
-      // In this version of SendHello I fill SetData with real values. This is a work in progress
       for (std::map<Ptr<Socket>, Ipv4InterfaceAddress>::const_iterator j = m_socketAddresses.begin(); j != m_socketAddresses.end(); ++j)
       {
 
@@ -606,7 +605,6 @@ namespace ns3
       {
         return;
       }
-      // Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
       Ptr<NetDevice> dev = m_ipv4->GetNetDevice(m_ipv4->GetInterfaceForAddress(iface.GetLocal()));
       while (m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() > 0)
       {

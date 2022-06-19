@@ -17,7 +17,23 @@ namespace ns3
     public:
       VbpHelloHeader();
       virtual ~VbpHelloHeader();
-
+      /**
+        * Sets information for control (hello) packets
+        * 
+        * \param packetType packet type
+        * \param posX node position in the x-plane
+        * \param posY node position in the y-plane
+        * \param speedX node velocity in the x-plane
+        * \param speedY node velocity in the y-plane
+        * \param neighborsAhead number of nodes ahead within a two-hop distance
+        * \param neighborsBehind number of nodes behind within a two-hop distance
+        * \param neighborFurthestAheadX neighboring node furthest ahead in the x-plane
+        * \param neighborFurthestAheadY neighboring node furthest ahead in the y-plane
+        * \param neighborFurthestBehindX neighboring node furthest behind in the x-plane
+        * \param neighborFurthestBehindY neighboring node furthest behind in the y-plane
+        * \param avgSpeedX average velocity of the node in the x-plane
+        * \param avgSpeedY average velocity of the node in the y-plane
+      */
       void SetData(uint8_t packetType, float posX, float posY, float speedX, float speedY, uint16_t neighborsAhead, uint16_t neighborsBehind, float neighborFurthestAheadX, float neighborFurthestAheadY, float neighborFurthestBehindX, float neighborFurthestBehindY, float avgSpeedX, float avgSpeedY);
       uint8_t GetPacketType(void) const;
       uint16_t GetNumNeighborsAhead(void) const;
@@ -32,7 +48,9 @@ namespace ns3
       float GetNeighborFurthestBehindY(void) const;
       float GetAvgSpeedX(void) const; // current average speed of 1 hop neighbors of forwarding node
       float GetAvgSpeedY(void) const;
+
       // below is inherited from Header
+
       static TypeId GetTypeId(void);
       virtual TypeId GetInstanceTypeId(void) const;
       virtual void Print(std::ostream &os) const;
