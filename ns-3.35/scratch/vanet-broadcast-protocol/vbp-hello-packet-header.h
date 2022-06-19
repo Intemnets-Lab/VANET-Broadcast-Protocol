@@ -35,23 +35,88 @@ namespace ns3
         * \param avgSpeedY average velocity of the node in the y-plane
       */
       void SetData(uint8_t packetType, float posX, float posY, float speedX, float speedY, uint16_t neighborsAhead, uint16_t neighborsBehind, float neighborFurthestAheadX, float neighborFurthestAheadY, float neighborFurthestBehindX, float neighborFurthestBehindY, float avgSpeedX, float avgSpeedY);
+      /**
+        * Gets the packet type
+        * 
+      */
       uint8_t GetPacketType(void) const;
+      /**
+        * Gets the number of neighbors ahead
+        * 
+        * \returns integer number of neighbors ahead
+      */
       uint16_t GetNumNeighborsAhead(void) const;
+      /**
+        * Gets the number of neighbors behind
+        * 
+        * \returns integer number of neighbors behind
+      */
       uint16_t GetNumNeighborsBehind(void) const;
+      /**
+        * Gets the x-coordinate of the forwarding node
+        * 
+        * \returns x-coordinate of the forwarding node
+      */
       float GetPositionX(void) const; // location of forwarding node
+      /**
+        * Gets the y-coordinate of the forwarding node
+        * 
+        * \returns y-coordinate of the forwarding node
+      */
       float GetPositionY(void) const;
+      /**
+        * Gets the current x-velocity of forwarding node
+        * 
+        * \returns x-velocity of forwarding node
+      */
       float GetSpeedX(void) const; // current speed of forwarding node
+      /**
+        * Gets the current y-velocity of forwarding node
+        * 
+        * \returns y-velocity of forwarding node
+      */
       float GetSpeedY(void) const;
+      /**
+        * Gets the x-location of the node furthest ahead of the forwarding node
+        * 
+        * \returns x-location of the node furthest ahead of the forwarding node
+      */      
       float GetNeighborFurthestAheadX(void) const; // location of node furthest ahead of forwarding node
+      /**
+        * Gets the y-location of the node furthest ahead of the forwarding node
+        * 
+        * \returns y-location of the node furthest ahead of the forwarding node
+      */    
       float GetNeighborFurthestAheadY(void) const;
+      /**
+        * Gets the x-location of the node furthest behind of the forwarding node
+        * 
+        * \returns x-location of the node furthest behind of the forwarding node
+      */   
       float GetNeighborFurthestBehindX(void) const; // location of node furthest behind of forwarding node
+      /**
+        * Gets the y-location of the node furthest behind of the forwarding node
+        * 
+        * \returns y-location of the node furthest behind of the forwarding node
+      */  
       float GetNeighborFurthestBehindY(void) const;
+      /**
+        * Gets the current average x-velocity of 1 hop neighbors of forwarding node
+        * 
+        * \returns current average x-velocity of 1 hop neighbors of forwarding node
+      */ 
       float GetAvgSpeedX(void) const; // current average speed of 1 hop neighbors of forwarding node
+      /**
+        * Gets the current average y-velocity of 1 hop neighbors of forwarding node
+        * 
+        * \returns current average y-velocity of 1 hop neighbors of forwarding node
+      */ 
       float GetAvgSpeedY(void) const;
 
       // below is inherited from Header
 
-      static TypeId GetTypeId(void);
+      //Get the type ID
+      static TypeId GetTypeId(void); 
       virtual TypeId GetInstanceTypeId(void) const;
       virtual void Print(std::ostream &os) const;
       virtual void Serialize(Buffer::Iterator start) const;
