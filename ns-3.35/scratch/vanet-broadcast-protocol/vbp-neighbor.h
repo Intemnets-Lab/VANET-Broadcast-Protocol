@@ -24,10 +24,25 @@ class VbpNeighbors : public Object {
         virtual TypeId GetInstanceTypeId (void) const;
         virtual void Print (std::ostream &os) const;
         void AppendNeighbor(Ipv4Address neighborAddress);
-        void AppendQueue(const Ptr<Packet> p);
-        bool QueueEmpty();
-        void RemoveQueue(VbpRoutingHeader dataHeader);
         int FindNeighbor (Ipv4Address address); // returns index for specified nodeIP, returns -1 if new nodeIP
+        /**
+         * Adds node as new neighbor or update a nodes information
+         * 
+         * \param address IP address of node
+         * \param direction direction node travels [+1 ahead] [-1 behind]
+         * \param neighborsAhead number of neighbors ahead
+         * \param neighborsBehind number of neighbors behind
+         * \param posX node's position in the x-plane
+         * \param posY node's position in the y-plane
+         * \param speedX node's speed in the x-plane
+         * \param speedY node's speed in the y-plane
+         * \param neighborFurthestAheadX x-position of neighbor furthest ahead of node 
+         * \param neighborFurthestAheadY y-position of neighbor furthest ahead of node 
+         * \param neighborFurthestBehindX x-position of neighbor furthest behind of node 
+         * \param neighborFurthestBehindY y-position of neighbor furthest behind of node
+         * \param avgSpeedX node's average speed in the x-plane
+         * \param avgSpeedY node's average speed in the y-plane
+        */
         void AddNode (Ipv4Address address,
                       uint16_t direction,
                       uint16_t neighborsAhead,
@@ -42,48 +57,231 @@ class VbpNeighbors : public Object {
                       float neighborFurthestBehindY, 
                       float avgSpeedX, 
                       float avgSpeedY);
-        Ptr<Packet> GetPacketQueue();
-        uint16_t GetQueueSize();
-        uint16_t Get1HopNumNeighbors ();       // total number of 1 hop neighbors
-        uint16_t Get1HopNumNeighborsAhead ();  // number of neighbors ahead of 1 hop neighbor
-        uint16_t Get1HopNumNeighborsBehind (); // number of neighbors behind 1 hop neighbor
-        Ipv4Address Get1HopNeighborIPAhead (uint16_t index);  // id of 1 hop neighbor ahead, grabbed by index
-        Ipv4Address Get1HopNeighborIPBehind (uint16_t index); // id of 1 hop neighbor behind, grabbed by index
-        Ipv4Address Get1HopNeighborIP (uint16_t index);  // get id based on index in vector if neighbor Ids, grabbed by index
-        uint16_t Get1HopDirectionByIP (Ipv4Address address);   // if 1 hop neighbor ahead or behind, grabbed by nodeId
+        /**
+         * Gets the number of one-hop neighbors
+         * 
+         * \returns number of one-hop neighbors
+        */
+        uint16_t Get1HopNumNeighbors ();
+        /**
+         * Gets the number of neighbors ahead of one-hop neighbor
+         * 
+         * \returns number of neighbors ahead of one-hop neighbor
+        */
+        uint16_t Get1HopNumNeighborsAhead ();  
+        /**
+         * Gets the number of neighbors behind of one-hop neighbor
+         * 
+         * \returns number of neighbors behind of one-hop neighbor
+        */
+        uint16_t Get1HopNumNeighborsBehind ();
+        /**
+         * Gets the IP of the one-hop neighbor ahead. Grabbed by index.
+         * 
+         * \returns IP of the one-hop neighbor ahead
+        */
+        Ipv4Address Get1HopNeighborIPAhead (uint16_t index);
+        /**
+         * Gets the IP of the one-hop neighbor behind. Grabbed by index.
+         * 
+         * \returns IP of the one-hop neighbor behind
+        */
+        Ipv4Address Get1HopNeighborIPBehind (uint16_t index);
+        /**
+         * Gets the IP of a neighbor one-hop away
+         * 
+         * \returns IP of a neighbor one-hop away
+        */
+        Ipv4Address Get1HopNeighborIP (uint16_t index); 
+        /**
+         * Gets the direction of a one-hop neighbor
+         * 
+         * \returns direction of a one-hop neighbor
+        */
+        uint16_t Get1HopDirectionByIP (Ipv4Address address);
+        /**
+         * Gets the direction of one-hop neighbor ahead or behind
+         * 
+         * \returns direction of one-hop neighbor ahead or behind
+        */
         uint16_t Get1HopDirection (uint16_t index);        // if 1 hop neighbor ahead or behind, grabbed by index
+        /**
+         * Gets the one-hop number of nodes ahead of neighbor
+         * 
+         * \returns one-hop number of nodes ahead of neighbor
+        */
         uint16_t Get1HopNumberOfNodesAheadOfNeighbor (uint16_t index);  // if 1 hop neighbor has neighbor's ahead
+        /**
+         * Gets the one-hop number of neighbors behind the neighbor
+         * 
+         * \returns one-hop number of neighbors behind the neighbor
+        */
         uint16_t Get1HopNumberOfNodesBehindOfNeighbor (uint16_t index); // if 1 hop neighbor has neighbor's behind
-        float GetNeighborPositionX (uint16_t index);  // get location, grabbed by index
+        /**
+         * Gets the neighbor position in the x-plane
+         * 
+         * \returns neighbor position in the x-plane
+        */
+        float GetNeighborPositionX (uint16_t index);
+        /**
+         * Gets the neighbor position in the y-plane
+         * 
+         * \returns neighbor position in the y-plane
+        */
         float GetNeighborPositionY (uint16_t index);
-        float GetNeighborSpeedX (uint16_t index);     // get speed, grabbed by index
+        /**
+         * Gets the neighbor velocity in the x-plane
+         * 
+         * \returns neighbor velocity in the x-plane
+        */
+        float GetNeighborSpeedX (uint16_t index);
+        /**
+         * Gets the neighbor velocity in the y-plane
+         * 
+         * \returns neighbor velocity in the y-plane
+        */
         float GetNeighborSpeedY (uint16_t index);
-        std::vector<float> Get1HopNeighborLocationsX ();   // get locations for all 1 hop neighbors
+        /**
+         * Gets the one-hop neighbor location in the x-plane
+         * 
+         * \returns one-hop neighbor location in the x-plane
+        */
+        std::vector<float> Get1HopNeighborLocationsX ();
+        /**
+         * Gets the one-hop neighbor location in the y-plane
+         * 
+         * \returns one-hop neighbor location in the y-plane
+        */
         std::vector<float> Get1HopNeighborLocationsY ();
-        std::vector<float> Get1HopNeighborSpeedX ();       // get speed for all 1 hop neighbors
+        /**
+         * Gets all one-hop neighbors velocity in the x-plane
+         * 
+         * \returns all one-hop neighbors velocity in the x-plane
+        */
+        std::vector<float> Get1HopNeighborSpeedX ();
+        /**
+         * Gets all one-hop neighbors velocity in the y-plane
+         * 
+         * \returns all one-hop neighbors velocity in the y-plane
+        */
         std::vector<float> Get1HopNeighborSpeedY ();
+        /**
+         * Gets the x-coordinate of the furthest ahead neighbor
+         * 
+         * \returns x-coordinate of the furthest ahead neighbor
+        */
         float GetNeighborFurthestAheadX (uint16_t index);  // location for furthest vehicle ahead for a specific node, grabbed by index
+        /**
+         * Gets the y-coordinate of the furthest ahead neighbor
+         * 
+         * \returns y-coordinate of the furthest ahead neighbor
+        */
         float GetNeighborFurthestAheadY (uint16_t index); 
+        /**
+         * Gets the x-coordinate of the furthest behind neighbor
+         * 
+         * \returns x-coordinate of the furthest behind neighbor
+        */
         float GetNeighborFurthestBehindX (uint16_t index); // location for furthest vehicle behind for a specific node, grabbed by index
+        /**
+         * Gets the y-coordinate of the furthest behind neighbor
+         * 
+         * \returns y-coordinate of the furthest behind neighbor
+        */
         float GetNeighborFurthestBehindY (uint16_t index);
+        /**
+         * Gets the average x-plane speed of all neighbors
+         * 
+         * \returns average x-plane speed of all neighbors
+        */
         float GetAvgSpeedNeighborX (float speedReferenceX);// from neighbors, find average speed
+        /**
+         * Gets the average y-plane speed of all neighbors
+         * 
+         * \returns average y-plane speed of all neighbors
+        */
         float GetAvgSpeedNeighborY (float speedReferenceY);
-        int GetNeighborFurthestAheadByIndex(Vector reference);  // find vehicle that is furthest ahead within 1 hop
+        /**
+         * Gets the node that is furthest ahead within one-hop
+         * 
+         * \returns node that is furthest ahead within one-hop
+        */
+        int GetNeighborFurthestAheadByIndex(Vector reference); 
+        /**
+         * Gets the node that is furthest behind within one-hop
+         * 
+         * \returns node that is furthest behind within one-hop
+        */
         int GetNeighborFurthestBehindByIndex(Vector reference);
+        /**
+         * Gets the average x-plane speed of one-hop neighbor 
+         * 
+         * \returns average x-plane speed of one-hop neighbor 
+        */
         float GetNeighborAvgSpeedX(uint16_t index);        // get average speed of 1 hop neighbor grabbed by index
+        /**
+         * Gets the average y-plane speed of one-hop neighbor 
+         * 
+         * \returns average y-plane speed of one-hop neighbor 
+        */
         float GetNeighborAvgSpeedY(uint16_t index);
+        /**
+         * Gets the furthest ahead node within a two-hop distance
+         * 
+         * \returns furthest ahead node within a two-hop distance
+        */
         int Get2HopDistFurthestAheadByIndex(Vector reference);  // discuss working cases, highlight that it handles other cases
+        /**
+         * Gets the furthest behind node within a two-hop distance
+         * 
+         * \returns furthest behind node within a two-hop distance
+        */
         int Get2HopDistFurthestBehindByIndex(Vector reference);
+        /**
+         * Gets the number of nodes within two-hops
+         * 
+         * \returns number of nodes within two-hops
+        */
         uint16_t Get2HopCarCount(int twoHopFurthestAheadIndex, int twoHopFurthestBehindIndex, Vector reference);
+        /**
+         * Gets the number of ahead nodes within two-hops
+         * 
+         * \returns number of ahead nodes within two-hops
+        */
         uint16_t Get2HopCarCountSelfAhead(int twoHopFurthestAheadIndex, Vector reference);
+        /**
+         * Gets the number of behind nodes within two-hops
+         * 
+         * \returns number of behind nodes within two-hops
+        */
         uint16_t Get2HopCarCountSelfBehind(int twoHopFurthestBehindIndex, Vector reference);
+        /**
+         * Gets the average x-plane speed of vehicles within the neighborhood
+         * 
+         * \returns average x-plane speed of vehicles within the neighborhood
+        */
         float GetNeighborHoodSpeedMeanX(); // get average from sampled values in m_mostRecentNeighborHoodNSpeedX
+        /**
+         * Gets the average y-plane speed of vehicles within the neighborhood
+         * 
+         * \returns average y-plane speed of vehicles within the neighborhood
+        */
 	    float GetNeighborHoodSpeedMeanY(); // get average from sampled values in m_mostRecentNeighborHoodNSpeedY
+        /**
+         * Gets the LOS value
+         * 
+         * \returns LOS value
+        */
         float GetLosCalculation(Vector referencePos, Vector referenceVel);
         void SetThisNode(Ptr<Node> n);
         void PrintNeighborState ();               // will display different info
         void PrintNeighbors();
         void PrintNeighbors2();
+        /**
+         * Print neighbor 
+         * 
+         * \returns integer number of neighbors behind
+        */
         void PrintDirections ();              // will display entries in m_1HopNeighborIDs
         void PrintNeighborsAhead ();          // will display neighbor IDs that are ahead
         void PrintNeighborsBehind ();         // will display neighbor IDs that are behind

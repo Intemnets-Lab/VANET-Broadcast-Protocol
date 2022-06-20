@@ -20,31 +20,53 @@ namespace ns3
             VbpQueue();
             virtual ~VbpQueue();
             static TypeId GetTypeId (void);
+            /**
+             * Appends packet to queue
+             * 
+            */
             void AppendPacket(Ptr<const Packet> p);
-            // void AppendDestination(Ipv4Address destination);
-            // void AppendSource(Ipv4Address source);
-            // void AppendProtocol(uint8_t protocol);
-            // void AppendUcb(Ipv4RoutingProtocol::UnicastForwardCallback ucb);
-            // void AppendEcb(Ipv4RoutingProtocol::ErrorCallback ecb);
+            /**
+             * Appends header to queue
+             * 
+            */
             void AppendHeader(Ipv4Header header);
+            /**
+             * Gets the packets in the queue (FIFO)
+             * 
+            */
             Ptr<const Packet> GetPacket();
-            // Ipv4Address GetDestination();
-            // Ipv4Address GetSource();
+            /**
+             * Gets the headers in the queue (FIFO)
+             * 
+            */
             Ipv4Header GetHeader();
+            /**
+             * Gets the number of packets in the queue
+             * 
+             * \returns number of packets in the queue
+            */
             uint16_t GetQueueSize();
-            //uint8_t GetProtocol();
-            Ipv4RoutingProtocol::UnicastForwardCallback GetUcb();
+            /**
+             * Calls error callback
+             * 
+            */
             Ipv4RoutingProtocol::ErrorCallback GetEcb();
+            /**
+             * Peeks the front packet of the queue
+             * 
+             * \returns front packet of the queue
+            */
             Ptr<const Packet> PeekPacket();
+            /**
+             * Determins if queue is full
+             * 
+             * \returns true if queue full. Otherwise, false.
+            */
             bool QueueFull();
 
         private:
             uint16_t m_queueSizeLimit;
             std::vector<Ptr<const Packet>> m_packetQ; // to hold queue of packet
-            //std::vector<uint8_t> m_protocolQ;
-            //std::vector<Ipv4Address> m_dstQ; // to hold queue of packet
-            //std::vector<Ipv4Address> m_srcQ; // to hold queue of packet
-            std::vector<Ipv4RoutingProtocol::UnicastForwardCallback> m_ucbQ;
             std::vector<Ipv4RoutingProtocol::ErrorCallback> m_ecbQ;
             std::vector<Ipv4Header> m_headerQ; // to hold queue of packet
         };

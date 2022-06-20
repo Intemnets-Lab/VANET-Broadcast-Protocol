@@ -61,14 +61,6 @@ VbpQueue::PeekPacket()
     return p;
 }
 
-Ipv4RoutingProtocol::UnicastForwardCallback
-VbpQueue::GetUcb()
-{
-    Ipv4RoutingProtocol::UnicastForwardCallback ucb = m_ucbQ.front();
-    m_ucbQ.erase(m_ucbQ.begin());
-    return ucb;
-}
-
 Ipv4RoutingProtocol::ErrorCallback
 VbpQueue::GetEcb()
 {

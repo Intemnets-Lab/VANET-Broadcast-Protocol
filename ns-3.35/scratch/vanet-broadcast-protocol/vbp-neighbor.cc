@@ -77,46 +77,6 @@ VbpNeighbors::AppendNeighbor (Ipv4Address neighborAddress)
      m_1HopNeighborIPs.push_back(neighborAddress); // neighbors identified by address
   }
 
-void
-VbpNeighbors::AppendQueue(const Ptr<Packet> p)
-{
-    std::cout << "Append Queue" << std::endl;
-    m_packetQ.push_back(p);
-}
-
-Ptr<Packet>
-VbpNeighbors::GetPacketQueue()
-{
-            std::cout << "Get Packet Queue" << std::endl;
-    Ptr<Packet> p = m_packetQ.front();
-
-    m_packetQ.erase(m_packetQ.begin());
-
-    return p;
-}
-
-bool
-VbpNeighbors::QueueEmpty()
-{
-    std::cout << "QueueEmpty" << std::endl;
-     if (m_packetQ.size() == 0)
-    {
-        std::cout << "No packets in queue" << std::endl;
-        return true;
-    }
-    else
-    {
-        std::cout << "Packets in queue" << std::endl;
-        return false;
-    }   
-}
-
-uint16_t
-VbpNeighbors::GetQueueSize()
-{
-    return m_packetQ.size();
-}
-
 void 
 VbpNeighbors::AddDirection (uint16_t direction, Ipv4Address address) {
     m_1HopNeighborDirection.push_back(direction);
