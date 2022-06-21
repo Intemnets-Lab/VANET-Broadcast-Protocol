@@ -34,7 +34,9 @@ namespace ns3
        */
       static TypeId GetTypeId(void);
       static const uint8_t PROT_NUMBER; //!< protocol number for VBP
+      static const uint8_t UDP_PROT_NUMBER; //!< protocol number for UDP
       static const uint32_t VBP_HELLO_PORT; // Port for control (hello) packets
+      static const uint32_t VBP_DATA_PORT; // Port for data (vbp) packets
       /// constructor
       RoutingProtocol();
       virtual ~RoutingProtocol();
@@ -127,8 +129,8 @@ namespace ns3
       void StartHelloTx(void); //Schedules transmission of hello headers
 
     private:
-      int m_maxDistance; // maximum distance of one hop [meters]
-      int m_txCutoffPercentage;
+      int m_maxDistance; // maximum distance of one hop [meters]. Will not consider neighbors beyond this distance.
+      int m_txCutoffPercentage; //reduces m_maxDistance by a factor
       float m_vcHighTraffic; // high traffic level based on LOS
       float m_vcLowTraffic; // low traffic level based on LOS
       float m_emptyQueuePeriod; // frequency EmptyQueue() should be called [seconds]

@@ -9,7 +9,9 @@ namespace ns3
   {
     NS_OBJECT_ENSURE_REGISTERED(RoutingProtocol);
     const uint8_t RoutingProtocol::PROT_NUMBER = 253;
+    const uint8_t RoutingProtocol::UDP_PROT_NUMBER = 17;
     const uint32_t RoutingProtocol::VBP_HELLO_PORT = 655;
+    const uint32_t RoutingProtocol::VBP_DATA_PORT = 8081;
     uint64_t m_uniformRandomVariable;
     const uint32_t Period_HelloTx = 95;
     const uint32_t Jitter_HelloTx = 10;
@@ -244,40 +246,20 @@ namespace ns3
             {
               NS_LOG_LOGIC("local delivery at " << iface.GetLocal());
               UdpHeader udpHead;
-              udpHead.SetDestinationPort(8081);
-              udpHead.SetSourcePort(8081);
+              udpHead.SetDestinationPort(VBP_DATA_PORT); //8081
+              udpHead.SetSourcePort(VBP_DATA_PORT); //8081
               udpHead.InitializeChecksum(header.GetSource(), header.GetDestination(), PROT_NUMBER);
               q->AddHeader(udpHead);
               Ipv4Header headerCopy;
-              // headerCopy.SetDestination(Ipv4Address("127.0.0.1"));
               headerCopy.SetDestination(header.GetDestination());
               headerCopy.SetDscp(header.GetDscp());
               headerCopy.SetEcn(header.GetEcn());
               headerCopy.SetIdentification(header.GetIdentification());
-              // headerCopy.SetInstanceTypeId(header.GetInstanceTypeId());
               headerCopy.SetPayloadSize(header.GetPayloadSize());
-              headerCopy.SetProtocol(17);
-              // headerCopy.SetSerializedSize(header.GetSerializedSize());
+              headerCopy.SetProtocol(UDP_PROT_NUMBER); //17
               headerCopy.SetSource(header.GetSource());
               headerCopy.SetTos(header.GetTos());
               headerCopy.SetTtl(header.GetTtl());
-              std::cout << "Get Destination " << header.GetDestination() << std::endl;
-              std::cout << "Get Dscp " << header.GetDscp() << std::endl;
-              std::cout << "Get Ecn " << header.GetEcn() << std::endl;
-              std::cout << "Get identification " << header.GetIdentification() << std::endl;
-              std::cout << "Get Instance type id " << header.GetInstanceTypeId() << std::endl;
-              std::cout << "Get Payload Size " << header.GetPayloadSize() << std::endl;
-              uint8_t protocol_numb2 = header.GetProtocol();
-              std::cout << "Get Protocol " << protocol_numb2 << std::endl;
-              std::cout << "Get Serialize Size " << header.GetSerializedSize() << std::endl;
-              std::cout << "Get Source " << header.GetSource() << std::endl;
-              std::cout << "Get Tos " << header.GetTos() << std::endl;
-              std::cout << "Get Ttl " << header.GetTtl() << std::endl;
-              std::cout << "\n"
-                        << std::endl;
-              q->Print(std::cout);
-              std::cout << "\n"
-                        << std::endl;
               lcb(q, headerCopy, iif);
             }
             return true;
@@ -1422,11 +1404,11 @@ namespace ns3
       // case 1: vehicle already in broadcast area
       VbpRoutingHeader routingHeader;
       p->PeekHeader(routingHeader);
-      std::cout << "Print Packet \n"
-                << std::endl;
-      p->Print(std::cout);
-      std::cout << "Print Packet END \n"
-                << std::endl;
+      // std::cout << "Print Packet \n"
+      //           << std::endl;
+      // p->Print(std::cout);
+      // std::cout << "Print Packet END \n"
+      //           << std::endl;
       NS_LOG_LOGIC("RoutePacket Prev Hop IP: " << routingHeader.GetPrevHopIP());
       NS_LOG_LOGIC("RoutePacket Packet Type: " << routingHeader.GetPacketType());
       if ((routingHeader.GetPosition1X() <= vehiclePos.x) && (vehiclePos.x <= routingHeader.GetPosition2X()))

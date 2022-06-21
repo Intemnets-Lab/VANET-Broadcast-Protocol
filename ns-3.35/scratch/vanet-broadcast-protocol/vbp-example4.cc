@@ -268,7 +268,6 @@ int main(int argc, char *argv[])
     Ptr<MyRandomExpTrafficApp> udpSourceAppPtr = CreateObject<MyRandomExpTrafficApp>();
     udpSourceAppPtr->Setup(udpSourceSocket, Ipv4Address(NET_BROADCAST_ADDRESS), VBP_PORT, PacketSize, DataRate(AppDataRate), PRNGRunNumber);
     nodes.Get(0)->AddApplication(udpSourceAppPtr);
-    //udpSourceSocket->SetRecvCallback(MakeCallback(&ReceivePacket));
     udpSourceAppPtr->SetStartTime(Seconds(2));
     // =============== SOURCE APP =================
 

@@ -77,7 +77,6 @@ namespace ns3
     m_running = true;
     // set socket to broadcast to all neighbors
     m_socketptr->Bind(InetSocketAddress(Ipv4Address::GetAny(), m_portNum));
-    //m_socketptr->Connect(InetSocketAddress(Ipv4Address("255.255.255.255"), m_portNum));
     m_socketptr->Connect(InetSocketAddress(m_netBroadcastAddress, m_portNum));
     //m_socketptr->SetAllowBroadcast(true);
     SendPacket();
@@ -94,7 +93,6 @@ namespace ns3
 
   void MyRandomExpTrafficApp::SendPacket(void)
   {
-    std::cout << "Send Packet" << std::endl;
     Ptr<Packet> packetptr = Create<Packet>(m_packetSize);
     m_socketptr->Send(packetptr);
     ScheduleTx();
