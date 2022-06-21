@@ -201,7 +201,6 @@ namespace ns3
 
           uint8_t VbpHelloHeader::GetPacketType(void) const
           {
-               // std::cout << unsigned(m_packetType) << std::endl;
                return m_packetType;
           }
 

@@ -62,3 +62,28 @@ The high-level goal of this class is the following:
     3. Data storing and transferring
 
 Data packets deal (also known as VBP packets) are found in the class `VbpRoutingHeader`. 
+
+
+
+
+### Logging
+
+Logging is used to monitor the codebase or for debugging purposes.
+
+To enable all logging messages:
+```bash
+NS_LOG="*" ./waf --run vanet-broadcast-protocol
+```
+
+#### Logging terminal output
+For logging messages from a specific class, search for NS_LOG_COMPONENT_DEFINE in the protocol files.
+If you wish to enable log outputs for VBP you will find at the top of the script
+```NS_LOG_COMPONENT_DEFINE("VanetBroadcastProtocol");```
+
+In the terminal type
+```bash
+NS_LOG="VanetBroadcastProtocol" ./waf --run vanet-broadcast-protocol
+```
+
+#### Logging Syntax
+When writing code

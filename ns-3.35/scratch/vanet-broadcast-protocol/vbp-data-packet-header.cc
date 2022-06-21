@@ -67,7 +67,6 @@ namespace ns3
    m_packetType = start.ReadU8 ();
    while (m_packetType != 'd')
    {
-      //std::cout << "Count: " << ++count << std::endl;
       m_packetType = start.ReadU8 ();
    }
 

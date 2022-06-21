@@ -52,10 +52,10 @@ namespace ns3
   void
   VanetBroadcastHelper::SetBroadcastArea(std::vector<float> broadcastArea)
     {
-        m_broadcastArea[0] = broadcastArea[0];
-        m_broadcastArea[1] = broadcastArea[1];
-        m_broadcastArea[2] = broadcastArea[2];
-        m_broadcastArea[3] = broadcastArea[3];
+        m_broadcastArea[0] = broadcastArea[0]; //upper left x
+        m_broadcastArea[1] = broadcastArea[1]; //upper left y
+        m_broadcastArea[2] = broadcastArea[2]; //bottom-right x
+        m_broadcastArea[3] = broadcastArea[3]; //bottom-right y
     }
 
 

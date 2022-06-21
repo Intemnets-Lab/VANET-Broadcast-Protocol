@@ -48,7 +48,7 @@ VbpQueue::QueueFull()
 Ptr<const Packet>
 VbpQueue::GetPacket()
 {
-    std::cout << "Get Packet Queue " << std::endl;
+    NS_LOG_LOGIC("Get Packet Queue ");
     Ptr<const Packet> p = m_packetQ.front();
     m_packetQ.erase(m_packetQ.begin());
     return p;
@@ -72,7 +72,7 @@ VbpQueue::GetEcb()
 Ipv4Header
 VbpQueue::GetHeader()
 {
-   std::cout << "Get Header Queue " << std::endl;
+   NS_LOG_LOGIC("Get Header Queue ");
    Ipv4Header header = m_headerQ.front();
    m_headerQ.erase(m_headerQ.begin());
    return header;
