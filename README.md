@@ -82,20 +82,43 @@ $ NS_LOG="VanetBroadcastProtocol" ./waf --run vanet-broadcast-protocol
 
 
 
-Log Components:
+Log Severity Class:
 
 
-| Log Severity Level | Description | 
-| :---        |    :----:   |  
-| LOG_NONE      | No logging       | 
-| LOG_ERROR   | Serious messages        |
-| LOG_WARN   | Warning messages        |
-| LOG_DEBUG   | Debugging messages        |
-| LOG_INFO   | Informational        |
-| LOG_FUNCTION   | Function tracking        |
-| LOG_LOGIC   | Logic flow within functions        |
+| Log Severity Class | Description | 
+| :---        |    :----:  |  
+| LOG_NONE      | No logging    | 
+| LOG_ERROR   | Serious messages that inform of cases where simulation may break |
+| LOG_WARN   | Warning messages     |
+| LOG_DEBUG   | Debugging messages   |
+| LOG_INFO   | Informational   |
+| LOG_FUNCTION   | Function tracking    |
+| LOG_LOGIC   | Logic flow within functions  |
 
 
+We can track log messages that appear at a severity class and above it. For example, the following code will track the 'Log Function' component found in various functions of VanetBroadcastProtocol. The output also shows log severity levels that are above Log\_Function, such as Log\_Error.
+
+
+```bash
+$ NS_LOG=VanetBroadcastProtocol=level_function ./waf --run vanet-broadcast-protocol
+```
+
+| Severity Level | Description | 
+| :---        |    :----:  |  
+| LOG_LEVEL_ERROR      | Output log error messages only  | 
+| LOG_LEVEL_WARN     | Output log warn and log error messages only    | 
+| LOG_LEVEL_DEBUG      | Output log debug and above messages only   | 
+| LOG_LEVEL_INFO      |  Output log info and above messages only   | 
+| LOG_LEVEL_FUNCTION      |  Output log function and above messages only    | 
+| LOG_LEVEL_LOGIC      |  Output log logic and above messages only    | 
+| LOG_ALL      | Output all log messages    | 
+
+
+
+
+Extra parameters to the command segments out specific log levels. For example, the following code will track the 'Log Function' component found in various functions of VanetBroadcastProtocol. The output also shows log severity levels that are above Log\_Function, such as Log\_Error.
+
+Using LOG\_Debug is useful for debugging because the outputs only include messages at that level and series errors from the above levels.
 
 
 
