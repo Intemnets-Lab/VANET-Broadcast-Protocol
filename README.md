@@ -5,6 +5,7 @@ VANET Broadcast Protocol (VBP) is a framework that supports a wireless, multi-ho
 The goal of VBP is:
 
 1. To provide a framework for researchers to test their routing algorithms on wireless, multi-hop network topologies. 
+
     a. Researchers can focus on implementing their routing algorithms on the routing layer of the TCP/IP wireless stack rather than implementing the wireless stack from scratch
 2. To document minimal requirements for a user to set up their own wireless routing protocol in ns-3
 3. To test our routing protocol using the VBP framework
@@ -18,9 +19,7 @@ Users can modify the existing routing protocol to test their own routing algorit
 ### Requirements
 VBP was built using ns-3 version 3.35. ns-3 supports unix based enviornments and it is recommended to use a unix-based environment such as Linux or MacOS. Windows Subsystem for Linux (WSL) is also an option for Windows 10 or Windows 11 users. 
 
-Please refer to ns-3's official installation guide for instructions to install on your operating system
-https://www.nsnam.org/wiki/Installation
-
+Please refer to ns-3's official [installation guide](https://www.nsnam.org/wiki/Installation) for instructions to install on your operating system
 
 ### Installation
 
@@ -124,9 +123,18 @@ Using LOG\_Debug is useful for debugging because outputs include messages at hig
 
 ### Example Outputs & Useful Debugging Information
 
+The examples that ship with VBP contain an application that prints out a message during a successful transmission.
+```bash
+Application Layer:512 bytes received
+```
+
+For future contribution to the VBP framework or VBP routing protocol, we recommend looking for this output when running the example scripts. This is one area a user can look at that shows all pieces of the routing protocol work as intended.
+
 
 
 #### Queue Size
+Queue size is another metric users can look at to see that the routing protocol works as intended.
+The output message is found in RoutingProtocol::EmptyQueue(). The queue is developed in class VbpQueue.
 
 
 <center>
@@ -136,6 +144,14 @@ Using LOG\_Debug is useful for debugging because outputs include messages at hig
 
 
 #### Neighbor List
+The neighbor list output can show information such as the neighbors ahead, neighbors behind, number of neighbors and furthest neighbor.
+
+The code that triggers this output is found in RoutingProtocol::SendHello() and the function that creates these messages is found in VbpNeighbor::PrintNeighborState().
+
+
+<center>
+<img src="TerminalOutput_NeighborInfo.png" alt="drawing" width="475"/>
+</center>
 
 
 
@@ -145,7 +161,5 @@ Using LOG\_Debug is useful for debugging because outputs include messages at hig
 #### Local Delivery
 
 
-
-Applcation Layer: 512 bytes received
 
 

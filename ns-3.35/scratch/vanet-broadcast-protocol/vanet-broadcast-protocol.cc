@@ -405,7 +405,7 @@ namespace ns3
       {
         RecvHello(packet, receiver, sender);
         NS_LOG_LOGIC("Neighbors List: " << "Receiver " << receiver << " Sender " << sender << " Packet type: " << destinationHeader.GetPacketType());
-        //m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighbors2();
+       // m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighbors2();
       }
     }
 
@@ -553,7 +553,9 @@ namespace ns3
         Simulator::Schedule(jitter, &RoutingProtocol::SendHello, this);
         SendTo(socket, packet, destination);
       }
-      m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighborState();
+      // Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+      // std::cout << "Current Node: " << iface.GetAddress() << std::endl;
+      //m_neighborsListPointer->GetObject<VbpNeighbors>()->PrintNeighborState();
     }
 
     void
