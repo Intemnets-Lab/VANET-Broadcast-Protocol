@@ -597,7 +597,7 @@ namespace ns3
       NS_LOG_FUNCTION(this);
       Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
       Ipv4Address thisVehicleIP = iface.GetAddress();
-      std::cout << "Queue Size at: " << thisVehicleIP << " is " << m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() << std::endl;
+      NS_LOG_LOGIC("Queue Size at: " << thisVehicleIP << " is " << m_queuePointer->GetObject<VbpQueue>()->GetQueueSize());
       Ipv4Address nextHopAhead;
       Ipv4Address nextHopBehind;
       if (m_queuePointer->GetObject<VbpQueue>()->GetQueueSize() == 0)
@@ -654,6 +654,7 @@ namespace ns3
     void
     RoutingProtocol::ScheduleEmptyQueue()
     {
+      NS_LOG_FUNCTION(this);
       EmptyQueue();
       Simulator::Schedule(Seconds(m_emptyQueuePeriod), &RoutingProtocol::ScheduleEmptyQueue, this);
     }
@@ -667,6 +668,7 @@ namespace ns3
         If the vehicle is not moving towards the broadcast area then the next hop behind pointer must be updated
         If both next hop ahead and next hop behind addresses are 102.102.102.102 then no nodes exist ahead/behind and no first hop is available
       */
+      NS_LOG_FUNCTION(this);
       Vector vehiclePos = m_thisNode->GetObject<MobilityModel>()->GetPosition();
       Vector vehicleVel = m_thisNode->GetObject<MobilityModel>()->GetVelocity();
       float upperLeftBA_x = m_broadcastArea[0];

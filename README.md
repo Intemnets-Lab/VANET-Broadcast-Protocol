@@ -117,6 +117,9 @@ $ NS_LOG=VanetBroadcastProtocol=level_function ./waf --run vanet-broadcast-proto
 Using LOG\_Debug is useful for debugging because outputs include messages at high severities LOG_WARN and LOG_ERROR.
 
 
+<center>
+<img src="TerminalOutput_Logging.png" alt="drawing" width="475"/>
+</center>
 
 
 ### Example Outputs & Useful Debugging Information
