@@ -151,18 +151,18 @@ namespace ns3
       {
         NS_LOG_LOGIC("Sender FindFirstHop: " << iface.GetAddress());
         NS_LOG_LOGIC("Send First Hop - Ahead " << nextHopAhead << " Behind " << nextHopBehind);
-        if (iface.GetAddress() == Ipv4Address("10.1.1.1") && nextHopAhead == Ipv4Address("10.1.1.6"))
-        {
-          std::cout << "SRC N0 DST N20 Towards BA: Sender & Receiver Test PASSED" << std::endl;
-        }
-        if (iface.GetAddress() == Ipv4Address("10.1.1.21") && nextHopBehind == Ipv4Address("10.1.1.16"))
-        {
-          std::cout << "SRC N21 DST N0 AWAY BA: Sender & Receiver Test PASSED" << std::endl;
-        }
-        if (iface.GetAddress() == Ipv4Address("10.1.1.11") && nextHopAhead == Ipv4Address("10.1.1.16"))
-        {
-          std::cout << "SRC N10 DST N0/N21 TOWARDS BA: Sender & Receiver Test PASSED" << std::endl;
-        }
+        // if (iface.GetAddress() == Ipv4Address("10.1.1.1") && nextHopAhead == Ipv4Address("10.1.1.6"))
+        // {
+        //   std::cout << "SRC N0 DST N20 Towards BA: Sender & Receiver Test PASSED" << std::endl;
+        // }
+        // if (iface.GetAddress() == Ipv4Address("10.1.1.21") && nextHopBehind == Ipv4Address("10.1.1.16"))
+        // {
+        //   std::cout << "SRC N21 DST N0 AWAY BA: Sender & Receiver Test PASSED" << std::endl;
+        // }
+        // if (iface.GetAddress() == Ipv4Address("10.1.1.11") && nextHopAhead == Ipv4Address("10.1.1.16"))
+        // {
+        //   std::cout << "SRC N10 DST N0/N21 TOWARDS BA: Sender & Receiver Test PASSED" << std::endl;
+        // }
         SetSendFirstHop(&nextHopAhead, &nextHopBehind, p, dev, iface, src, dst);
       }
       else

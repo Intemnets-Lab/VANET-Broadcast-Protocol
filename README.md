@@ -114,11 +114,8 @@ $ NS_LOG=VanetBroadcastProtocol=level_function ./waf --run vanet-broadcast-proto
 | LOG_ALL      | Output all log messages    | 
 
 
+Using LOG\_Debug is useful for debugging because outputs include messages at high severities LOG_WARN and LOG_ERROR.
 
-
-Extra parameters to the command segments out specific log levels. For example, the following code will track the 'Log Function' component found in various functions of VanetBroadcastProtocol. The output also shows log severity levels that are above Log\_Function, such as Log\_Error.
-
-Using LOG\_Debug is useful for debugging because the outputs only include messages at that level and series errors from the above levels.
 
 
 
@@ -127,6 +124,13 @@ Using LOG\_Debug is useful for debugging because the outputs only include messag
 
 
 #### Queue Size
+
+
+<center>
+<img src="TerminalOutput_QueueSize.png" alt="drawing" width="475"/>
+</center>
+
+
 
 #### Neighbor List
 
