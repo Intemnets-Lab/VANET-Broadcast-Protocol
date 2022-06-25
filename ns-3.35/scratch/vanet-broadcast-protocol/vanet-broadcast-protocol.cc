@@ -238,9 +238,6 @@ namespace ns3
             NS_LOG_LOGIC("Protocol Number = 253, VBP Data Packet at " << iface.GetLocal());
             bool packetSentIndicator = false;
             Ptr<Packet> q = p->Copy();
-            // std::cout << "Packet Q RI One: \n" << std::endl;
-            // q->Print(std::cout);
-            // std::cout << "\n" << std::endl;
             bool lcbIndicator = RoutePacket(q, dst, src, &packetSentIndicator); // true lcb. false no lcb
             if (lcbIndicator)
             {
