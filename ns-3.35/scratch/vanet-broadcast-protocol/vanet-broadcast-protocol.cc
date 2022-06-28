@@ -676,7 +676,7 @@ namespace ns3
       float lowerRightBA_y = m_broadcastArea[3];
       Vector centerBA = Vector3D((upperLeftBA_x + lowerRightBA_x) / 2, (upperLeftBA_y + lowerRightBA_y) / 2, 0);
       Vector vehicleToBA = centerBA - vehiclePos;
-      bool movingToBA = (vehicleVel.x * vehicleToBA.x + vehicleVel.y * vehicleToBA.y) > 0; // true if moving towards BA
+      bool movingToBA = (vehicleVel.x * vehicleToBA.x + vehicleVel.y * vehicleToBA.y) >= 0; // true if moving towards BA
       if (movingToBA)
       {
         NS_LOG_LOGIC("First hop vehicle moving towards BA");
@@ -1439,7 +1439,7 @@ namespace ns3
       Ipv4Address prevHopIP = routingHeader.GetPrevHopIP();
       Vector vehicleVel = m_thisNode->GetObject<MobilityModel>()->GetVelocity();
       Vector vehicleToBA = centerBA - vehiclePos;
-      bool movingToBA = (vehicleVel.x * vehicleToBA.x + vehicleVel.y * vehicleToBA.y) > 0; // true if moving towards BA
+      bool movingToBA = (vehicleVel.x * vehicleToBA.x + vehicleVel.y * vehicleToBA.y) >= 0; // true if moving towards BA
       Ipv4Address nextHopAhead;
       Ipv4Address nextHopBehind;
       // case 3: use FindNextHop to route packet
