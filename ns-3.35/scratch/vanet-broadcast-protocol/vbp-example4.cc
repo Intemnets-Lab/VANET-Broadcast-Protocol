@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
         {
             //BA to right
             nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2 + 100, 0, 0));
-            std::cout << nodes.Get(i) << "EmptyQueue Vehicle Distance " << NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2 + 100 << std::endl;
+            //std::cout << nodes.Get(i) << "EmptyQueue Vehicle Distance " << NumNodes*vehicleDistance + vehicleSpeed*SimulationTime/2 + 100 << std::endl;
             nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed/vehicleSpeed), 0, 0)); 
 
             // //BA to left
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
         else //caravan pos/vel
         {
         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetPosition(Vector(vehicleDistance*i, 0, 0));
-        std::cout << nodes.Get(i) << " Vehicle Distance " << vehicleDistance*i << std::endl;
+        //std::cout << nodes.Get(i) << " Vehicle Distance " << vehicleDistance*i << std::endl;
         nodes.Get(i)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector((vehicleSpeed + 0.0001*i), 0, 0));
         } 
     }

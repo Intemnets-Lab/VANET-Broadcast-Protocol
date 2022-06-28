@@ -123,10 +123,17 @@ Using LOG\_Debug is useful for debugging because outputs include messages at hig
 
 ### Example Outputs & Useful Debugging Information
 
-The examples that ship with VBP contain an application that prints out a message during a successful transmission.
+The examples that ships with VBP contain an application that prints out a message during a successful transmission.
 ```bash
 Application Layer:512 bytes received
 ```
+
+Below is the expected output of a successful simulation.
+
+<center>
+<img src="TerminalOutput_ApplicationLayer.png" alt="drawing" width="475"/>
+</center>
+
 
 For future contribution to the VBP framework or VBP routing protocol, we recommend looking for this output when running the example scripts. This is one area a user can look at that shows all pieces of the routing protocol work as intended.
 
@@ -155,10 +162,6 @@ The code that triggers this output is found in RoutingProtocol::SendHello() and 
 
 
 
-#### Packet Type
-
-
-#### Local Delivery
 
 
 
