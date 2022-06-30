@@ -124,9 +124,6 @@ namespace ns3
         If FindFirstHop() returns true SetSendFirstHop() is called. This shows that a first hop is available and Ipv4L3Protocol is used to send the packet to the next hop
       */
       NS_LOG_FUNCTION(this);
-      // std::cout << "Packet P RO One: \n" << std::endl;
-      // p->Print(std::cout);
-      // std::cout << "www\n" << std::endl;
       Ptr<Ipv4Route> route;
       if (m_socketAddresses.empty())
       {
@@ -192,9 +189,6 @@ namespace ns3
       We ensure that we are dealing with vbp data packets by checking that the protocol number.
       It can be confirmed if a packet is delivered at a specific node IP address through the log 'local delivery at'
       */
-      // std::cout << "Packet P RI One: \n" << std::endl;
-      // p->Print(std::cout);
-      // std::cout << "qqq\n" << std::endl;
       NS_LOG_FUNCTION(this);
       if (m_socketAddresses.empty())
       {
