@@ -2,19 +2,11 @@
 
 VANET Broadcast Protocol (VBP) is a framework that supports a wireless, multi-hop routing protocol made for vehicular networks. It is built on top of an open-source network simulator tool called [ns-3](https://www.nsnam.org/about/).
 
-The goal of VBP is:
+The goals of VBP are:
 
-1. To provide a framework for researchers to test their routing algorithms on wireless, multi-hop network topologies. 
-
-    a. Researchers can focus on implementing their routing algorithms on the routing layer of the TCP/IP wireless stack rather than implementing the wireless stack from scratch
-2. To document minimal requirements for a user to set up their own wireless routing protocol in ns-3
-3. To test our routing protocol using the VBP framework
-
-For example, if a researcher has a custom routing algorithm, we provide a minimal way to test it.
-
-
-
-Users can modify the existing routing protocol to test their own routing algorithms 
+1. To simulate a wireless, multi-hop routing protocol on vehicular networks
+2. To provide a framework for researchers to create their own routing algorithms
+3. To document the process and requirements of setting up a custom routing protocol in ns-3
 
 ### Requirements
 VBP was built using ns-3 version 3.35. ns-3 supports unix based enviornments and it is recommended to use a unix-based environment such as Linux or MacOS. Windows Subsystem for Linux (WSL) is also an option for Windows 10 or Windows 11 users. 
