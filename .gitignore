@@ -53,3 +53,5 @@ cmake-build-release/
 !.vscode/launch.json
 !.vscode/tasks.json
 .DS_Store
+ns-3.35/.DS_Store
+ns-3.35/scratch/.DS_Store

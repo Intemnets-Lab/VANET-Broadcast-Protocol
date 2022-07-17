@@ -54,7 +54,7 @@ namespace ns3
        * Route an input packet (to be forwarded or locally delivered)
        * This lookup is used in the forwarding process. The packet is handed over to the Ipv4RoutingProtocol, and will get forwarded onward by one of the callbacks.
        * The Linux equivalent is ip_route_input(). There are four valid outcomes, and a matching callbacks to handle each.
-       * \param p received packet
+       * \param p packet to be routed by VBP
        * \param header input parameter used to form a search key for a route
        * \param idev Pointer to ingress network device
        * \param ucb Callback for the case in which the packet is to be forwarded as unicast
@@ -76,18 +76,6 @@ namespace ns3
        * \param ipv4 the ipv4 object this routing protocol is being associated with
       */
       virtual void SetIpv4(Ptr<Ipv4> ipv4);
-      /**
-       * Three cases for routing packets. 1. vehicle already in the broadcast area. 2. vehicle not in BA but will reach BA before expiration.
-       * 3. calls FindNextHop().
-       * 
-       * \param p packet to be routed
-       * \param dst destination of packet
-       * \param src source of packet
-       * \param packetSentIndicator set to true after packet is sent using Ipv4L3Protocol
-       * 
-       * \returns true if packet will be routed and lcb will be called. Otherwise, false and lcb will not be called.
-      */
-      bool RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bool *packetSentIndicator);
       /**
        * Sets broadcast area coordinates as {(x1,y1,x2,y2)} where (x1,y1) are the upper left corner of the BA
        * and (x2,y2) are the bottom right corner of the BA
@@ -125,7 +113,6 @@ namespace ns3
        * \param address a new address being added to an interface
       */
       virtual void NotifyRemoveAddress(uint32_t interface, Ipv4InterfaceAddress address);
-      void SendHello(void); // Adds hello header information to packet to be sent
       void StartHelloTx(void); //Schedules transmission of hello headers
 
     private:
@@ -156,6 +143,20 @@ namespace ns3
       std::map<Ptr<Socket>, Ipv4InterfaceAddress> m_socketAddresses;
 
       //Routing Algorithms
+
+      /**
+       * Three cases for routing packets. 1. vehicle already in the broadcast area. 2. vehicle not in BA but will reach BA before expiration.
+       * 3. calls FindNextHop().
+       * 
+       * \param p packet to be routed
+       * \param dst destination of packet
+       * \param src source of packet
+       * \param packetSentIndicator set to true after packet is sent using Ipv4L3Protocol
+       * 
+       * \returns true if packet will be routed and lcb will be called. Otherwise, false and lcb will not be called.
+      */
+      bool RoutePacket(Ptr<Packet> p, Ipv4Address dst, Ipv4Address src, bool *packetSentIndicator);
+
       /**
        * Finds the first hop
        * \param nextHopAheadPtr 
@@ -299,6 +300,7 @@ namespace ns3
        * \returns index of best hop moving away from the broadcast area
       */
       void SetSendFirstHop(Ipv4Address* nextHopAheadPtr,Ipv4Address* nextHopBehindPtr,Ptr<Packet> p,Ptr<NetDevice> dev ,Ipv4InterfaceAddress iface,Ipv4Address src,Ipv4Address dst);
+      void SendHello(void); // Adds hello header information to packet to be sent
       /**
        * Send packet to neighbor
        * \param socket input socket

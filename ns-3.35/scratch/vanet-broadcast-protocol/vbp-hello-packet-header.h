@@ -25,14 +25,14 @@ namespace ns3
         * \param posY node position in the y-plane
         * \param speedX node velocity in the x-plane
         * \param speedY node velocity in the y-plane
-        * \param neighborsAhead number of nodes ahead within a two-hop distance
-        * \param neighborsBehind number of nodes behind within a two-hop distance
+        * \param neighborsAhead number of nodes ahead within a one-hop distance
+        * \param neighborsBehind number of nodes behind within a one-hop distance
         * \param neighborFurthestAheadX neighboring node furthest ahead in the x-plane
         * \param neighborFurthestAheadY neighboring node furthest ahead in the y-plane
         * \param neighborFurthestBehindX neighboring node furthest behind in the x-plane
         * \param neighborFurthestBehindY neighboring node furthest behind in the y-plane
-        * \param avgSpeedX average velocity of the node in the x-plane
-        * \param avgSpeedY average velocity of the node in the y-plane
+        * \param avgSpeedX average velocity of the neighbors of a node in the x-plane
+        * \param avgSpeedY average velocity of the neighbors of a node in the y-plane
       */
       void SetData(uint8_t packetType, float posX, float posY, float speedX, float speedY, uint16_t neighborsAhead, uint16_t neighborsBehind, float neighborFurthestAheadX, float neighborFurthestAheadY, float neighborFurthestBehindX, float neighborFurthestBehindY, float avgSpeedX, float avgSpeedY);
       /**

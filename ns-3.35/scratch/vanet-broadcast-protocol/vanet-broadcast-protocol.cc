@@ -385,13 +385,30 @@ namespace ns3
       packet->PeekHeader(destinationHeader);
       NS_LOG_LOGIC("---Tx From --- " << sender);
       NS_LOG_LOGIC("---Tx To --- " << receiver);
-      NS_LOG_LOGIC("---Begin Header Information --- ");
+      NS_LOG_LOGIC("---Begin Control Header Information --- ");
       NS_LOG_LOGIC("Packet Type: " << destinationHeader.GetPacketType());
       NS_LOG_LOGIC("Position X: " << destinationHeader.GetPositionX());
       NS_LOG_LOGIC("Position Y: " << destinationHeader.GetPositionY());
       NS_LOG_LOGIC("Speed X: " << destinationHeader.GetSpeedX());
       NS_LOG_LOGIC("Speed Y: " << destinationHeader.GetSpeedY());
-      NS_LOG_LOGIC("---End Header Information --- ");
+      // std::cout << "Tx from: " << sender << std::endl;
+      // std::cout << "Tx to: " << receiver << std::endl;
+      // std::cout << "---Begin Control Header Information---" << std::endl;
+      // std::cout << "Packet type: " << destinationHeader.GetPacketType() << std::endl;
+      // std::cout << "Position X [m]: " << destinationHeader.GetPositionX() << std::endl;
+      // std::cout << "Position Y [m]: " << destinationHeader.GetPositionY() << std::endl;
+      // std::cout << "Speed X [m/s]:" << destinationHeader.GetSpeedX()  << std::endl;
+      // std::cout << "Speed Y [m/s]:" << destinationHeader.GetSpeedY()  << std::endl;
+      // std::cout << "Number of neighbors ahead: " << destinationHeader.GetNumNeighborsAhead()  << std::endl;
+      // std::cout << "Number of neighbors behind: " << destinationHeader.GetNumNeighborsBehind()  << std::endl;
+      // std::cout << "Neighbor furthest ahead X-Pos [m]: " << destinationHeader.GetNeighborFurthestAheadX()  << std::endl;
+      // std::cout << "Neighbor furthest ahead Y-Pos [m]: " << destinationHeader.GetNeighborFurthestAheadY()  << std::endl;
+      // std::cout << "Neighbor furthest behind X-Pos [m]: " << destinationHeader.GetNeighborFurthestBehindX()  << std::endl;
+      // std::cout << "Neighbor furthest behind Y-Pos [m]: " << destinationHeader.GetNeighborFurthestBehindY()  << std::endl;
+      // std::cout << "Average speed X [m/s]: " << destinationHeader.GetAvgSpeedX()  << std::endl;
+      // std::cout << "Average speed Y [m/s]: " << destinationHeader.GetAvgSpeedY()  << std::endl;
+      // std::cout << "---End Control Header Information---" << std::endl;
+      NS_LOG_LOGIC("---End Control Header Information --- ");
       if (destinationHeader.GetPacketType() == m_helloPacketType)
       {
         RecvHello(packet, receiver, sender);
@@ -1406,6 +1423,18 @@ namespace ns3
       //           << std::endl;
       NS_LOG_LOGIC("RoutePacket Prev Hop IP: " << routingHeader.GetPrevHopIP());
       NS_LOG_LOGIC("RoutePacket Packet Type: " << routingHeader.GetPacketType());
+      // Ipv4InterfaceAddress iface = m_socketAddresses.begin()->second;
+      // std::cout << "\n" << std::endl;
+      // std::cout << "This vehicle (IP address): " << iface.GetLocal() << std::endl;
+      // std::cout << "---Begin Data Packet Header Information---" << std::endl;
+      // std::cout << "Packet type: " << routingHeader.GetPacketType() << std::endl;
+      // std::cout << "Previous hop (IP address): " << routingHeader.GetPrevHopIP() << std::endl;
+      // std::cout << "BA X-pos (upper left): " << routingHeader.GetPosition1X() << std::endl;
+      // std::cout << "BA Y-pos (upper left): " << routingHeader.GetPosition1Y() << std::endl;
+      // std::cout << "BA X-pos (bottom right): " << routingHeader.GetPosition2X() << std::endl;
+      // std::cout << "BA Y-pos (bottom right): " << routingHeader.GetPosition2Y() << std::endl;
+      // std::cout << "BA expiration time: " << routingHeader.GetBroadcastingTime() << std::endl;
+      // std::cout << "---End Data Packet Header Information---" << std::endl;
       if ((routingHeader.GetPosition1X() <= vehiclePos.x) && (vehiclePos.x <= routingHeader.GetPosition2X()))
       {
         NS_LOG_LOGIC("RoutePacket Case 1: Vehicle already in the broadcast area ");

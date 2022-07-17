@@ -52,7 +52,7 @@ NS_LOG_COMPONENT_DEFINE("wireless-grid");
 void ReceivePacket(Ptr<Socket> socket)
 {
     while (Ptr<Packet> packet = socket->Recv())
-
+        
         std::cout << "Application Layer:" << packet->GetSize() << " bytes received" << std::endl;
 }
 

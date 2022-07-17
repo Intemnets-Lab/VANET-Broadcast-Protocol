@@ -23,8 +23,6 @@ class VbpNeighbors : public Object {
         static TypeId GetTypeId (void);
         virtual TypeId GetInstanceTypeId (void) const;
         virtual void Print (std::ostream &os) const;
-        void AppendNeighbor(Ipv4Address neighborAddress);
-        int FindNeighbor (Ipv4Address address); // returns index for specified nodeIP, returns -1 if new nodeIP
         /**
          * Adds node as new neighbor or update a nodes information
          * 
@@ -328,6 +326,8 @@ class VbpNeighbors : public Object {
 	    std::vector<float> m_mostRecentNeighborHoodNSpeedX = std::vector<float>(m_NSamples,0); // initializes all values to zero
 	    std::vector<float> m_mostRecentNeighborHoodNSpeedY = std::vector<float>(m_NSamples,0);
         std::vector<Ptr<Packet>> m_packetQ; // to hold queue of packet  
+        void AppendNeighbor(Ipv4Address neighborAddress);
+        int FindNeighbor (Ipv4Address address); // returns index for specified nodeIP, returns -1 if new nodeIP
         void ScheduleSpeedLogUpdate ();  
         void GetSpeedValue ();
         void AddSpeedSample(float speedX, float speedY, float neighborhoodSpeedX, float neighborhoodSpeedY);
