@@ -1,12 +1,20 @@
 ## VANET Broadcast Protocol
 
-VANET Broadcast Protocol (VBP) is a framework that supports a wireless, multi-hop routing protocol made for vehicular networks. It is built on top of an open-source network simulator tool called [ns-3](https://www.nsnam.org/about/).
+VANET Broadcast Protocol (VBP) is a framework that supports a dynamic, multi-hop routing protocol made for mobile and wireless vehicular networks. It is built on top of an open-source network simulator tool called [ns-3](https://www.nsnam.org/about/).
 
 The goals of VBP are:
 
-1. To simulate a wireless, multi-hop routing protocol on vehicular networks
-2. To provide a framework for researchers to create their own routing algorithms
-3. To document the process and requirements of setting up a custom routing protocol in ns-3
+1. Develop a routing protocol that supports multi-hop capabilities and dynamic routing on a VANET for ns-3
+    - Routing decisions based on traffic environment
+    - Produce small end-to-end delay
+    - Use internet layer of TCP/IP model
+2. Provide simulation parameters and setup for ns-3
+    - Test VBP funcitonality using simulations
+    - Simulation code can be modified and debugged
+3. Document the development of a custom routing protocol for ns-3
+    - Did not find comprehensive documentation to create a routing protocol in ns-3
+
+
 
 ### Requirements
 VBP was built using ns-3 version 3.35. ns-3 supports unix based enviornments and it is recommended to use a unix-based environment such as Linux or MacOS. Windows Subsystem for Linux (WSL) is also an option for Windows 10 or Windows 11 users. 
@@ -16,7 +24,7 @@ Please refer to ns-3's official [installation guide](https://www.nsnam.org/wiki/
 ### Installation
 
 ```bash
-git clone https://github.com/wmbjo/VANET-Broadcast-Protocol.git
+git clone https://github.com/Intemnets-Lab/VANET-Broadcast-Protocol.git
 cd ns-allinone-3.35
 ./build.py
 ```
@@ -117,7 +125,7 @@ Using LOG\_Debug is useful for debugging because outputs include messages at hig
 
 The examples that ships with VBP contain an application that prints out a message during a successful transmission.
 ```bash
-Application Layer:512 bytes received
+Application Layer: 512 bytes received
 ```
 
 Below is the expected output of a successful simulation.

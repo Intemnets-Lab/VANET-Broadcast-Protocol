@@ -235,7 +235,7 @@ namespace ns3
             bool lcbIndicator = RoutePacket(q, dst, src, &packetSentIndicator); // true lcb. false no lcb
             if (lcbIndicator)
             {
-              NS_LOG_LOGIC("local delivery at " << iface.GetLocal());
+              std::cout << "local delivery at " << iface.GetLocal() << std::endl;
               UdpHeader udpHead;
               udpHead.SetDestinationPort(VBP_DATA_PORT); //8081
               udpHead.SetSourcePort(VBP_DATA_PORT); //8081
