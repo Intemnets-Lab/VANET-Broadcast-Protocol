@@ -36,7 +36,7 @@ Source files for VBP and examples can be found in the following directory
 
 
 ### Getting Started
-VBP provides example simulation scripts in it's directory that shows how to use add VBP routing capabilities to nodes. This is useful for a those without prior knowledge of ns-3.
+VBP provides example simulation scripts in it's directory that shows how to use add VBP routing capabilities to nodes. This is useful for a those without prior knowledge of ns-3. Only one example script can be activated at a time. Comment out the scripts you do not wish to run.
 
 For those who have used ns-3 previously, VBP can be added to simulation scripts in a similar manner to other routing protocols.
 After calling <code>VanetBroadcastHelper</code> users must set the broadcast area (BA).
@@ -135,7 +135,7 @@ Below is the expected output of a successful simulation.
 </center>
 
 
-For future contribution to the VBP framework or VBP routing protocol, we recommend looking for this output when running the example scripts. This is one area a user can look at that shows all pieces of the routing protocol work as intended.
+We recommend looking for this output when running the example scripts. This is one indicator that the source application is received by the sink application by vehicles in the VANET.
 
 
 
