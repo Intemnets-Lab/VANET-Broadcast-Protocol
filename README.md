@@ -35,6 +35,7 @@ Source files for VBP and examples can be found in the following directory
 ```
 
 ### Installation on Newer Computers
+see https://www.nsnam.org/wiki/Ns-3.35_errata
 ```bash
 git clone https://github.com/Intemnets-Lab/VANET-Broadcast-Protocol.git
 cd VANET-Broadcast-Protocol/ns-3.35/
