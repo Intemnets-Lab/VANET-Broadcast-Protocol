@@ -25,13 +25,22 @@ Please refer to ns-3's official [installation guide](https://www.nsnam.org/wiki/
 
 ```bash
 git clone https://github.com/Intemnets-Lab/VANET-Broadcast-Protocol.git
-cd ns-allinone-3.35
+cd VANET-Broadcast-Protocol
 ./build.py
 ```
 
 Source files for VBP and examples can be found in the following directory
 ```bash
 /ns-allinone-3.35/ns-3.35/scratch/vanet-broadcast-protocol/
+```
+
+### Installation on Newer Computers
+```bash
+git clone https://github.com/Intemnets-Lab/VANET-Broadcast-Protocol.git
+cd VANET-Broadcast-Protocol/ns-3.35/
+./waf configure --disable-werror --nopyc --nopyo --nopycache --disable-python
+./waf build
+./waf --run vanet-broadcast-protocol
 ```
 
 
